@@ -25,24 +25,24 @@ export default async function IndexPage() {
   return (
     <>
       <Hero
-        capsuleText="100% Open-source & Free"
-        capsuleLink="https://stacktemplate.com"
-        title="A Multi-tenant Next.js Starter Template"
-        subtitle="Built for developers, by developers. Next.js + Shadcn UI + Stack Auth."
-        primaryCtaText="Get Started"
+        capsuleText="100% Open-source"
+        capsuleLink="https://github.com/LiftPulse/"
+        title="Mais controle, mais resultados: A gestão que sua academia merece!"
+        subtitle="Desenvolvido por apaixonados por musculação, para quem vive o treino de verdade."
+        primaryCtaText="Vamos Começar"
         primaryCtaLink={stackServerApp.urls.signUp}
-        secondaryCtaText="GitHub"
-        secondaryCtaLink="https://github.com/stack-auth/stack-template"
+        secondaryCtaText="Conhecer o projeto"
+        secondaryCtaLink="https://github.com/LiftPulse/"
         credits={
           <>
-            Crafted with ❤️ by{" "}
+            Desenvolvido com ❤️ pelo time{" "}
             <a
-              href="https://stack-auth.com"
+              href="https://github.com/LiftPulse"
               target="_blank"
               rel="noreferrer"
               className="underline"
             >
-              Stack Auth
+              LiftPulse
             </a>
           </>
         }
