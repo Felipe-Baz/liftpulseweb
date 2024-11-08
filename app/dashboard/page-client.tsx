@@ -23,9 +23,9 @@ export function PageClient() {
     return (
       <div className="flex items-center justify-center h-screen w-screen">
         <div className="max-w-xs w-full">
-          <h1 className="text-center text-2xl font-semibold">Welcome!</h1>
+          <h1 className="text-center text-2xl font-semibold">Bem vindo!</h1>
           <p className="text-center text-gray-500">
-            Create a team to get started
+            Crie sua academia para começar!
           </p>
           <form
             className="mt-4"
@@ -35,14 +35,14 @@ export function PageClient() {
             }}
           >
             <div>
-              <Label className="text-sm">Team name</Label>
+              <Label className="text-sm">Nome da academia</Label>
               <Input
-                placeholder="Team name"
+                placeholder="Nome da academia"
                 value={teamDisplayName}
                 onChange={(e) => setTeamDisplayName(e.target.value)}
               />
             </div>
-            <Button className="mt-4 w-full">Create team</Button>
+            <Button className="mt-4 w-full">Crie a Academia</Button>
           </form>
         </div>
       </div>
