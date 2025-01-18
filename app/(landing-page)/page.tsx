@@ -32,7 +32,7 @@ export default async function IndexPage() {
         primaryCtaText="Participe do Beta Teste"
         primaryCtaLink="https://forms.gle/6DT6awF1XbrdDjxRA"
         secondaryCtaText="Saiba Mais para Academias"
-        secondaryCtaLink="https://github.com/LiftPulse/"
+        secondaryCtaLink="https://calendly.com/fbazmitsuishi/30min"
         credits={
           <>
             Desenvolvido com ❤️ pelo time{" "}

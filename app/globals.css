@@ -90,6 +90,96 @@
   @apply bg-primary;
 }
 
+/* styles/schedule.module.css */
+.schedule-container {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9fafb;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.schedule-header {
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.schedule-header p {
+  font-size: 1.1rem;
+}
+
+.schedule-section {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.schedule-section h2 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.schedule-section p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.calendly-frame {
+  border-radius: 8px;
+  border: none;
+}
+
+.benefits-section {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+}
+
+.benefits-section h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.benefits-section ul {
+  list-style: none;
+  padding-left: 0;
+  font-size: 1.1rem;
+}
+
+.benefits-section ul li {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.schedule-footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 1rem;
+  color: #777;
+}
+
+.schedule-footer a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.schedule-footer a:hover {
+  text-decoration: underline;
+}
+
+
 @media (min-width: 800px) {
   .loader::after {
     width: 20%;
