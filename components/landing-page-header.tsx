@@ -151,9 +151,6 @@ export function LandingPageHeader(props: NavProps) {
 
         <div className="flex gap-4 items-center">
           <ColorModeSwitcher />
-          <nav className="gap-4 items-center hidden md:flex">
-            <AuthButtons />
-          </nav>
         </div>
       </div>
     </header>
