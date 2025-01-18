@@ -2,7 +2,6 @@
 
 import { Footer } from "@/components/footer";
 import { LandingPageHeader } from "@/components/landing-page-header";
-import { createContext } from "react";
 
 export default function Layout(props) {
   return (

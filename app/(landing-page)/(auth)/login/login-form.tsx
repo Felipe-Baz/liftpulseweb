@@ -3,11 +3,16 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { signInWithEmailAndPassword } from "firebase/auth"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from 'lucide-react'
+import { auth } from "@/lib/firebase"
+import api from "@/lib/api/axios-instance"
+import { setAuthCookies } from "../../../actions/auth"
+import type { LoginResponse } from "@/types/auth"
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -20,21 +25,30 @@ export default function LoginForm() {
     setError("")
 
     const formData = new FormData(event.currentTarget)
-    const email = formData.get("email")
-    const password = formData.get("password")
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
 
     try {
-      // Simula uma chamada de API
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Login no Firebase
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      const idToken = await userCredential.user.getIdToken()
 
-      // Aqui você adicionaria sua lógica de autenticação
-      if (email === "admin@example.com" && password === "password") {
-        router.push("/dashboard")
-      } else {
-        setError("Email ou senha inválidos")
-      }
+      // Chamada para a API
+      console.log(api);
+      
+      const response = await api.post<LoginResponse>('/api/v1/login', { idToken })
+      const { access_token, refreshtoken, is_signup_finished, plan } = response.data
+
+      // Salva os cookies no servidor
+      await setAuthCookies(access_token, refreshtoken, is_signup_finished, plan)
+
+      router.refresh()
+
+      router.push("/dashboard")
+      
     } catch (error) {
-      setError("Ocorreu um erro ao tentar fazer login")
+      console.error('Erro ao realizar login:', error)
+      setError("Email ou senha inválidos")
     } finally {
       setIsLoading(false)
     }
@@ -101,4 +115,3 @@ export default function LoginForm() {
     </form>
   )
 }
-

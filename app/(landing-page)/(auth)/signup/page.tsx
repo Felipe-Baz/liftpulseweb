@@ -16,18 +16,6 @@ export default function SignUpPage() {
           <SignUpForm />
         </div>
       </div>
-
-      {/* Coluna da Imagem */}
-      <div className="hidden lg:block relative">
-        <div className="absolute inset-0 bg-gradient-to-t from-primary to-primary/60" />
-        <Image 
-          src="/placeholder.svg?height=1080&width=1920"
-          alt="Sign up background"
-          className="object-cover"
-          priority
-          fill
-        />
-      </div>
     </div>
   )
 }

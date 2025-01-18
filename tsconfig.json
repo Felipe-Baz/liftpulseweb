@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,9 +22,23 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "target": "ES2017"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/dashboard/page.jsx", "app/(landing-page)/(auth)/login/page.tsx", "app/(landing-page)/(auth)/signup/page.jsx", "app/(landing-page)/layout.jsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/dashboard/page.jsx",
+    "app/(landing-page)/(auth)/login/page.tsx",
+    "app/(landing-page)/(auth)/signup/page.tsx",
+    "app/(landing-page)/layout.jsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
