@@ -1,7 +1,10 @@
+"use client"
+
 import { Footer } from "@/components/footer";
 import { LandingPageHeader } from "@/components/landing-page-header";
+import { createContext } from "react";
 
-export default function Layout(props: { children: React.ReactNode }) {
+export default function Layout(props) {
   return (
     <div className="flex min-h-screen flex-col">
       <LandingPageHeader

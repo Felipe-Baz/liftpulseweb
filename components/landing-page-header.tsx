@@ -1,7 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { useStackApp, useUser } from "@stackframe/stack";
+import { useState, useEffect } from "react";
+import { auth } from "@/lib/firebase"; // Importando o Firebase
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, User } from "firebase/auth"; // Importando funções do Firebase
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
@@ -9,6 +10,7 @@ import * as React from "react";
 import { ColorModeSwitcher } from "./color-mode-switcher";
 import { Logo } from "./logo";
 import { Button, buttonVariants } from "./ui/button";
+import { cn } from "@/lib/utils";
 
 interface NavProps {
   items?: {
@@ -20,20 +22,13 @@ interface NavProps {
 }
 
 function SignInSignUpButtons() {
-  const app = useStackApp();
   return (
     <>
-      <Link
-        href={app.urls.signIn}
-        className={buttonVariants({ variant: "secondary" })}
-      >
+      <Link href="/login" className={buttonVariants({ variant: "secondary" })}>
         Sign In
       </Link>
 
-      <Link
-        href={app.urls.signUp}
-        className={buttonVariants({ variant: "default" })}
-      >
+      <Link href="/signup" className={buttonVariants({ variant: "default" })}>
         Sign Up
       </Link>
     </>
@@ -41,14 +36,19 @@ function SignInSignUpButtons() {
 }
 
 function AuthButtonsInner() {
-  const user = useUser();
+  const [user, setUser] = useState<User | null>(null); // Estado para o usuário autenticado
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user); // Atualiza o estado do usuário conforme a autenticação
+    });
+
+    return () => unsubscribe(); // Limpa a assinatura ao desmontar
+  }, []);
 
   if (user) {
     return (
-      <Link
-        href="/dashboard"
-        className={buttonVariants({ variant: "default" })}
-      >
+      <Link href="/dashboard" className={buttonVariants({ variant: "default" })}>
         Dashboard
       </Link>
     );
@@ -84,7 +84,6 @@ function MobileItems(props: NavProps) {
               {item.title}
             </Link>
           ))}
-
           <div className="flex flex-col gap-2 mt-4">
             <AuthButtons />
           </div>
@@ -121,14 +120,13 @@ function DesktopItems(props: NavProps) {
 }
 
 export function LandingPageHeader(props: NavProps) {
-  const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
+  const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
 
   return (
     <header className="fixed w-full z-50 bg-background/80 px-4 md:px-8 backdrop-blur">
       <div className="flex h-18 items-center justify-between py-4">
         <div className="flex items-center gap-4 md:gap-10">
           <Logo className="hidden md:flex" />
-
           {props.items?.length ? <DesktopItems items={props.items} /> : null}
 
           <Button
