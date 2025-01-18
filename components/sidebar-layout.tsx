@@ -6,14 +6,6 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "./ui/breadcrumb";
 import { buttonVariants } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
@@ -112,37 +104,8 @@ function SidebarContent(props: {
   );
 }
 
-export type HeaderBreadcrumbItem = { title: string; href: string };
-
-function HeaderBreadcrumb(props: { items: SidebarItem[], baseBreadcrumb?: HeaderBreadcrumbItem[], basePath: string }) {
-  const segment = useSegment(props.basePath);
-  console.log(segment)
-  const item = props.items.find((item) => item.type === 'item' && item.href === segment);
-  const title: string | undefined = (item as any)?.name
-
-  return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        {props.baseBreadcrumb?.map((item, index) => (
-          <>
-            <BreadcrumbItem key={index}>
-              <BreadcrumbLink href={item.href}>{item.title}</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator key={`separator-${index}`} />
-          </>
-        ))}
-
-        <BreadcrumbItem>
-          <BreadcrumbPage>{title}</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
-  );
-}
-
 export default function SidebarLayout(props: {
   children?: React.ReactNode;
-  baseBreadcrumb?: HeaderBreadcrumbItem[];
   items: SidebarItem[];
   sidebarTop?: React.ReactNode;
   basePath: string;
@@ -156,34 +119,6 @@ export default function SidebarLayout(props: {
         <SidebarContent items={props.items} sidebarTop={props.sidebarTop} basePath={props.basePath} />
       </div>
       <div className="flex flex-col flex-grow w-0">
-        <div className="h-14 border-b flex items-center justify-between sticky top-0 bg-white dark:bg-black z-10 px-4 md:px-6">
-          <div className="hidden md:flex">
-            <HeaderBreadcrumb baseBreadcrumb={props.baseBreadcrumb} basePath={props.basePath} items={props.items} />
-          </div>
-
-          <div className="flex md:hidden items-center">
-            <Sheet
-              onOpenChange={(open) => setSidebarOpen(open)}
-              open={sidebarOpen}
-            >
-              <SheetTrigger>
-                <Menu />
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[240px] p-0">
-                <SidebarContent
-                  onNavigate={() => setSidebarOpen(false)}
-                  items={props.items}
-                  sidebarTop={props.sidebarTop}
-                  basePath={props.basePath}
-                />
-              </SheetContent>
-            </Sheet>
-
-            <div className="ml-4 flex md:hidden">
-              <HeaderBreadcrumb baseBreadcrumb={props.baseBreadcrumb} basePath={props.basePath} items={props.items} />
-            </div>
-          </div>
-        </div>
         <div className="flex-grow">{props.children}</div>
       </div>
     </div>
