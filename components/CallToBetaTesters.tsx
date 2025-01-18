@@ -28,7 +28,7 @@ const CallToBetaTesters: React.FC = () => {
         </div>
         <div className="mt-12">
           <a
-            href="https://forms.gle/SeuFormularioAqui" // Substitua com o link para seu formulário de inscrição
+            href="https://forms.gle/6DT6awF1XbrdDjxRA"
             target="_blank"
             rel="noreferrer"
             className={cn(buttonVariants({ size: "lg" }))}
