@@ -7,16 +7,18 @@ export default function Layout(props: { children: React.ReactNode }) {
       <LandingPageHeader
         items={[
           { title: "Home", href: "/" },
-          { title: "Features", href: "/#features" },
-          { title: "Preço", href: "/#pricing" },
-          { title: "Github", href: "https://github.com/LiftPulse/liftpulse_web_dashboard/", external: true },
+          { title: "Benefícios para Academias", href: "/#benefits" },
+          { title: "Plano Early Access", href: "/#early-access" },
+          { title: "Funcionalidades", href: "/#features" },
+          { title: "Beta Testers", href: "/#beta-testers" },
+          { title: "FAQ", href: "/#faq" },
         ]}
       />
       <main className="flex-1">{props.children}</main>
       <Footer
         builtBy="LiftPulse"
         builtByLink="https://github.com/LiftPulse/"
-        githubLink="https://github.com/LiftPulse/liftpulse_web_dashboard/"
+        instagramLink="https://github.com/LiftPulse/"
         twitterLink="https://github.com/LiftPulse/"
         linkedinLink="https://github.com/LiftPulse/"
       />

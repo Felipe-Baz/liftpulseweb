@@ -3,13 +3,14 @@ import {
   GitHubLogoIcon,
   LinkedInLogoIcon,
   TwitterLogoIcon,
+  InstagramLogoIcon
 } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 export function Footer(props: {
   builtBy: string;
   builtByLink: string;
-  githubLink: string;
+  instagramLink: string;
   twitterLink: string;
   linkedinLink: string;
 }) {
@@ -27,15 +28,6 @@ export function Footer(props: {
             >
               {props.builtBy}
             </a>
-            . The source code is available on{" "}
-            <a
-              href={props.githubLink}
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              GitHub
-            </a>
             .
           </p>
         </div>
@@ -45,7 +37,7 @@ export function Footer(props: {
             [
               { href: props.twitterLink, icon: TwitterLogoIcon },
               { href: props.linkedinLink, icon: LinkedInLogoIcon },
-              { href: props.githubLink, icon: GitHubLogoIcon },
+              { href: props.instagramLink, icon: InstagramLogoIcon },
             ] as const
           ).map((link, index) => (
             <Link

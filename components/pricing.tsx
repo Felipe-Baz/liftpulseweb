@@ -14,6 +14,7 @@ import Link from "next/link";
 type PricingCardProps = {
   title: string;
   price: string;
+  price_unit: string;
   description: string;
   features: string[];
   buttonText: string;
@@ -35,7 +36,7 @@ export function PricingCard(props: PricingCardProps) {
       <CardContent>
         <div className="mb-4">
           <span className="text-4xl font-bold">{props.price}</span>
-          <span className="text-muted-foreground">/month</span>
+          <span className="text-muted-foreground">{props.price_unit}</span>
         </div>
         <ul className="space-y-2">
           {props.features.map((feature, index) => (
