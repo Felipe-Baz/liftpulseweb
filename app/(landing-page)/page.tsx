@@ -13,9 +13,9 @@ export default async function IndexPage() {
         title="Transforme a Experiência dos Seus Alunos com o LiftPulse!"
         subtitle="O aplicativo completo para treinos personalizados e gestão de academias. Early Access promocional disponível!"
         primaryCtaText="Participe do Beta Teste"
-        primaryCtaLink="https://github.com/LiftPulse/"
+        primaryCtaLink="https://forms.gle/6DT6awF1XbrdDjxRA"
         secondaryCtaText="Saiba Mais para Academias"
-        secondaryCtaLink="https://github.com/LiftPulse/"
+        secondaryCtaLink="https://calendly.com/fbazmitsuishi/30min"
         credits={
           <>
             Desenvolvido com ❤️ pelo time{" "}

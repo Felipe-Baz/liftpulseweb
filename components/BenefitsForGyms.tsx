@@ -1,5 +1,7 @@
 // components/BenefitsForGyms.tsx
+import { cn } from "@/lib/utils";
 import React from "react";
+import { buttonVariants } from "./ui/button";
 
 interface Benefit {
   id: number;
@@ -58,6 +60,16 @@ const BenefitsForGyms: React.FC = () => {
               </p>
             </div>
           ))}
+        </div>
+        <div className="mt-12">
+          <a
+            href="https://calendly.com/fbazmitsuishi/30min"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ size: "lg" }))}
+          >
+            Agende uma Demonstração
+          </a>
         </div>
       </div>
     </section>
