@@ -1,10 +1,30 @@
+"use client"
+
+import { useBranch } from '@/contexts/branch-context'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
 export default function DashboardPage() {
-    return (
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold mb-4">Welcome to your Dashboard</h2>
-        <p className="text-gray-600">
-          You're successfully logged in!
-        </p>
-      </div>
-    );
-  }
+  const { selectedBranch } = useBranch()
+
+  return (
+    <div className="space-y-4">
+      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Selected Branch</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {selectedBranch ? (
+            <div>
+              <p>Name: {selectedBranch.name}</p>
+              <p>ID: {selectedBranch.id}</p>
+              <p>Address: {selectedBranch.address}</p>
+            </div>
+          ) : (
+            <p>No branch selected</p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
