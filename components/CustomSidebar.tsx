@@ -65,7 +65,7 @@ export default function Sidebar({ navigation, initialBranch }: any) {
     };
 
     return (
-        <div className="hidden w-70 flex-shrink-0 flex-col bg-white dark:bg-gray-800 md:flex">
+        <div className="hidden w-70 flex-shrink-0 flex-col md:flex">
             <div className="flex flex-1 flex-col overflow-y-auto pt-5">
                 {Object.keys(navigation).map((key) => (
                     <div key={key} className="px-3 py-2">

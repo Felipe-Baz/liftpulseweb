@@ -57,9 +57,9 @@ async function DashboardLayout({
 
   return (
     <BranchProvider initialBranches={branches} initialBranch={initialBranch}>
-      <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="flex h-screen">
         {/* Sidebar */}
-        <div className="hidden w-70 flex-shrink-0 flex-col bg-white dark:bg-gray-800 md:flex">
+        <div className="hidden w-70 flex-shrink-0 flex-col md:flex border-r">
           <div className="flex h-16 items-center justify-center border-b px-4">
             <BranchSelector />
           </div>
@@ -69,7 +69,7 @@ async function DashboardLayout({
 
         {/* Main Content */}
         <div className="flex flex-1 flex-col overflow-hidden">
-          <main className="flex-1 overflow-y-auto bg-gray-100 px-6 py-8 dark:bg-gray-900">
+          <main className="flex-1 overflow-y-auto bg-muted px-6 py-8 ">
             {children}
           </main>
         </div>
