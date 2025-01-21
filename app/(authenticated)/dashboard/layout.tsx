@@ -12,7 +12,7 @@ const navigation = {
   workouts: [
     { name: 'Biblioteca de Treinos', href: '/dashboard/workout/library', icon: "BookOpen" }, // Mostra a biblioteca de treinos criadas pelo time e os treinos personalizados da propria academia
     { name: 'Criar Novo Treino', href: '/dashboard/workout/create', icon: "Edit" }, // Pagina para criar um treino
-    { name: 'Acompanhamento de Treinos', href: '/dashboard/workout/create', icon: "LineChart" }, // Pagina para ter uma visão do progresso dos treinos em geral e dos usuarios atrelados ao treino, bem como o desempenho dos treinos em relação do esforço e opinião dos alunos
+    { name: 'Acompanhamento de Treinos', href: '/dashboard/workout/monitor', icon: "LineChart" }, // Pagina para ter uma visão do progresso dos treinos em geral e dos usuarios atrelados ao treino, bem como o desempenho dos treinos em relação do esforço e opinião dos alunos
     { name: 'Histórico de Treinos', href: '/dashboard/workout/history', icon: "Clock" }, // Pagina com os treinos e historico de treinos feitos pelos usuarios
   ],
   analytics: [

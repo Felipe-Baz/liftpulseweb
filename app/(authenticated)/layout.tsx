@@ -3,14 +3,14 @@
 import { ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { ColorModeSwitcher } from '@/components/color-mode-switcher';
-import { getAuth, signOut } from "firebase/auth";
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 export default function AuthenticatedLayout({
     children,
 }: {
     children: ReactNode;
 }) {
-    const auth = getAuth(); // Obtém a instância do Firebase Auth
     const router = useRouter();
 
     const handleLogout = async () => {
