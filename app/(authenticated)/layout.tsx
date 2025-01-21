@@ -3,16 +3,21 @@
 import { ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { ColorModeSwitcher } from '@/components/color-mode-switcher';
+import { getAuth, signOut } from "firebase/auth";
 
 export default function AuthenticatedLayout({
     children,
 }: {
     children: ReactNode;
 }) {
+    const auth = getAuth(); // Obtém a instância do Firebase Auth
     const router = useRouter();
 
     const handleLogout = async () => {
         try {
+            // Faz o logout do Firebase
+            await signOut(auth);
+
             const response = await fetch('/api/auth/logout', {
                 method: 'POST',
             });
