@@ -1,15 +1,18 @@
+import { getAuthCookies, setRefreshToken } from '@/app/actions/auth';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { getCookie, setCookie } from 'cookies-next'
+import { cookies } from 'next/headers';
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
 })
 
 // Interceptor para adicionar o token em todas as requisições
-api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-    const token = getCookie('authToken');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
+    const cookie = await getAuthCookies()
+    if (cookie) {
+        config.headers.Authorization = `Bearer ${cookie.authToken?.value}`;
+        console.log(config.headers.Authorization);
     }
 
     // Log da base URL e do payload
@@ -17,6 +20,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     console.log('Endpoint:', config.url);
     console.log('Method:', config.method);
     console.log('Data enviada:', config.data);
+    console.log('Headers enviada:', config.headers);
 
     return config;
 });
@@ -37,22 +41,26 @@ api.interceptors.response.use(
         });
 
         // Se o erro é 401 e não é uma tentativa de refresh
-        if (error.response?.status === 401 && originalRequest && !originalRequest.headers['x-retry']) {
+        if ((error.response?.status === 401 || error.response?.status === 403) && originalRequest && !originalRequest.headers['x-retry']) {
             try {
-                const refreshToken = getCookie('refreshToken')
+                var refresh: string | undefined = ""
+                const cookie = await getAuthCookies()
+                if (cookie) {
+                    refresh = cookie.refreshToken?.value
+                    console.log(refresh);
+                }
 
                 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
                 // Tenta obter novo token
                 const response = await axios.post(
                     `${baseUrl}/api/v1/refresh_token`,
-                    { refreshToken }
+                    { refresh }
                 )
 
-                const { access_token: newToken } = response.data
+                const { access_token: newToken, refreshtoken: newRefreshtoken } = response.data
 
-                // Atualiza o token nos cookies
-                setCookie('authToken', newToken)
+                await setRefreshToken(newRefreshtoken, newToken);
 
                 // Refaz a requisição original com o novo token
                 if (originalRequest.headers) {

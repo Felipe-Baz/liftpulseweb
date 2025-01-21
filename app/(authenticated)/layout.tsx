@@ -34,6 +34,7 @@ export default function AuthenticatedLayout({
                 </div>
                 <div className="flex items-center space-x-4">
                     <ColorModeSwitcher />
+                    <button onClick={handleLogout} className="text-sm">Logout</button>
                 </div>
             </header>
             <main className="max-w mx-auto">

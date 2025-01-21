@@ -31,6 +31,7 @@ export function BranchSelector() {
     try {
       setIsAdding(true)
       const newBranch = await addBranch(newBranchName)
+      branches.push(newBranch)
       setSelectedBranch(newBranch)
       setNewBranchName("")
       setIsOpen(false)

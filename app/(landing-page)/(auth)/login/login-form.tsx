@@ -39,6 +39,8 @@ export default function LoginForm() {
       const response = await api.post<LoginResponse>('/api/v1/login', { idToken })
       const { access_token, refreshtoken, is_signup_finished, plan } = response.data
 
+      console.log(response.data);
+
       // Salva os cookies no servidor
       await setAuthCookies(access_token, refreshtoken, is_signup_finished, plan)
 

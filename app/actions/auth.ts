@@ -41,6 +41,47 @@ export async function setAuthCookies(
   }
 }
 
+export async function getAuthCookies(){
+  const cookieStore = await cookies()
+  
+  var authToken = cookieStore.get('authToken');
+  
+  var refreshToken = cookieStore.get('refreshToken')
+
+  
+  var is_signup_finished = cookieStore.get('is_signup_finished')
+
+  var plan = cookieStore.get('plan')
+
+  return {
+    authToken,
+    refreshToken,
+    is_signup_finished,
+    plan
+  };
+}
+
+export async function setRefreshToken(
+  refreshtoken: string,
+  access_token: string,
+) {
+  const cookieStore = await cookies()
+    
+  cookieStore.set('authToken', access_token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7 // 7 days
+  })
+
+  cookieStore.set('refreshToken', refreshtoken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 30 // 30 days
+  })
+}
+
 export async function clearAuthCookies() {
   const cookieStore = await cookies()
   cookieStore.delete('authToken')
