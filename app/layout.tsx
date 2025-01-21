@@ -1,8 +1,8 @@
-
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Provider } from "./provider";
+import OverflowHandler from "@/components/OverflowHandler";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,11 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={inter.className}>
+      <OverflowHandler>
         <Provider>
-            {children}
+          {children}
         </Provider>
-      </body>
+      </OverflowHandler>
     </html>
   );
 }

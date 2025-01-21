@@ -8,7 +8,7 @@ import { PricingGrid } from "@/components/pricing";
 
 export default async function IndexPage() {
   return (
-    <>
+    <div className="overflow-y-visible">
       <Hero
         title="Transforme a Experiência dos Seus Alunos com o LiftPulse!"
         subtitle="O aplicativo completo para treinos personalizados e gestão de academias. Early Access promocional disponível!"
@@ -45,6 +45,6 @@ export default async function IndexPage() {
 
       <div id="faq" />
       <FAQ />
-    </>
+    </div>
   );
 }

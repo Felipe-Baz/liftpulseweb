@@ -37,7 +37,7 @@ export default function AuthenticatedLayout({
                     <button onClick={handleLogout} className="text-sm">Logout</button>
                 </div>
             </header>
-            <main className="max-w mx-auto">
+            <main className="max-w mx-auto overflow-y-none">
                 {children}
             </main>
         </div>
