@@ -39,8 +39,8 @@ const navigation = {
     { name: 'Relatórios de Marketing', href: '/dashboard/marketing/analytics', icon: "BarChart3" },
   ],
   configuration: [
-    { name: 'Perfil da Academia', href: '/dashboard/gym/perfil', icon: "Settings" },
-    { name: 'Gerenciar Acessos', href: '/dashboard/access/manage', icon: "Key" },
+    { name: 'Perfil da Academia', href: '/dashboard/gym/profile', icon: "Settings" },
+    { name: 'Gerenciar Acessos', href: '/dashboard/access', icon: "Key" },
     { name: 'Configurações', href: '/dashboard/settings', icon: "Settings" },
   ],
 }
