@@ -49,12 +49,17 @@ async function DashboardLayout({
   children,
   searchParams,
 }: {
-  children: React.ReactNode
-  searchParams: { branchId?: string }
+  children: React.ReactNode;
+  searchParams: { branchId?: string } | undefined;
 }) {
   // Fetch initial data on the server
   const branches = await fetchBranches();
-  const initialBranch = !searchParams ? (branches.find(b => b.id === searchParams?.branchId) || branches[0]) : branches[0]
+
+  // Safely determine the initial branch
+  const initialBranch =
+    searchParams?.branchId
+      ? branches.find((b) => b.id === searchParams.branchId)
+      : branches[0];
 
   return (
     <BranchProvider initialBranches={branches} initialBranch={initialBranch}>
@@ -64,7 +69,6 @@ async function DashboardLayout({
           <div className="flex h-16 items-center justify-center border-b px-4">
             <BranchSelector />
           </div>
-
           <Sidebar navigation={navigation} initialBranch={initialBranch} />
         </div>
 
