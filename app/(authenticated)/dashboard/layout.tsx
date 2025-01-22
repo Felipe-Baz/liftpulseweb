@@ -5,9 +5,9 @@ import { BranchProvider } from '@/contexts/branch-context'
 
 const navigation = {
   overview: [
-    { name: 'Dashboard Geral', href: '/dashboard', icon: "LayoutDashboard" },
+    { name: 'Overview', href: '/dashboard', icon: "LayoutDashboard" },
     { name: 'Análise de Uso', href: '/dashboard/analytics/use', icon: "Activity" },
-    { name: 'Tendências Recentes', href: '/dashboard/trend', icon: "TrendingUp" },
+    { name: 'Tendências Recentes', href: '/dashboard/analytics/trend', icon: "TrendingUp" },
   ],
   workouts: [
     { name: 'Biblioteca de Treinos', href: '/dashboard/workout/library', icon: "BookOpen" }, // Mostra a biblioteca de treinos criadas pelo time e os treinos personalizados da propria academia
