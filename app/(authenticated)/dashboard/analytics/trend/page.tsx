@@ -35,7 +35,7 @@ const goalTrendsData = [
 export default function TrendsDashboard() {
   return (
     <div className="flex-1">
-      <div className="flex items-center justify-between space-y-2">
+      <div className="flex items-center justify-between space-y-2 mb-5">
         <h2 className="text-3xl font-bold tracking-tight">Tendências</h2>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
