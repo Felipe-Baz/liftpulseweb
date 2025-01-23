@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import Image from "next/image"
 
 const profileFormSchema = z.object({
   name: z.string().min(2, {
@@ -40,7 +41,7 @@ export function GymProfileForm() {
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <div className="relative h-32 w-32">
-              <img
+              <Image
                 src="/placeholder.svg"
                 alt="Logo da academia"
                 className="rounded-lg object-cover"
