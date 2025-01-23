@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
 import {
   Dialog,
   DialogContent,
@@ -167,40 +166,20 @@ export function CreateCampaignDialog() {
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Data de Início</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                field.value.toLocaleDateString()
-                              ) : (
-                                <span>Selecione uma data</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date < new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormDescription>
-                        Quando a campanha começará
-                      </FormDescription>
+                      <FormControl>
+                        <input
+                          type="date"
+                          className={cn(
+                            "w-full px-3 py-2 border rounded-md text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                          value={field.value ? field.value.toISOString().split("T")[0] : ""}
+                          onChange={(e) => field.onChange(new Date(e.target.value))}
+                          min="1900-01-01"
+                          max={new Date().toISOString().split("T")[0]} // Limita ao dia atual
+                        />
+                      </FormControl>
+                      <FormDescription>Quando a campanha começará</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -212,40 +191,20 @@ export function CreateCampaignDialog() {
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Data de Término</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                field.value.toLocaleDateString()
-                              ) : (
-                                <span>Selecione uma data</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date < new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormDescription>
-                        Quando a campanha terminará
-                      </FormDescription>
+                      <FormControl>
+                        <input
+                          type="date"
+                          className={cn(
+                            "w-full px-3 py-2 border rounded-md text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                          value={field.value ? field.value.toISOString().split("T")[0] : ""}
+                          onChange={(e) => field.onChange(new Date(e.target.value))}
+                          min="1900-01-01"
+                          max={new Date().toISOString().split("T")[0]} // Limita ao dia atual
+                        />
+                      </FormControl>
+                      <FormDescription>Quando a campanha terminará</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
