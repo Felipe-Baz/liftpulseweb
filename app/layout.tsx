@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Provider } from "./provider";
 import OverflowHandler from "@/components/OverflowHandler";
-
-const inter = Inter({ subsets: ["latin"] });
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: "Liftpulse",
@@ -21,6 +20,7 @@ export default function RootLayout({
       <OverflowHandler>
         <Provider>
           {children}
+          <SpeedInsights />
         </Provider>
       </OverflowHandler>
     </html>
