@@ -56,7 +56,10 @@ export default function RegisterPage() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    addInstructor(values)
+    addInstructor({
+      ...values,
+      birthDate: values.birthDate.toISOString(),
+  });
     router.push('/dashboard/instructors')
   }
 
