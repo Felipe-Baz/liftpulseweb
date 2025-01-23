@@ -16,7 +16,6 @@ const navigation = {
     { name: 'Histórico de Treinos', href: '/dashboard/workout/history', icon: "Clock" }, // Pagina com os treinos e historico de treinos feitos pelos usuarios
   ],
   analytics: [
-    { name: 'Relatório Geral', href: '/dashboard/analytics/report/general', icon: "FileText" },
     { name: 'Progresso dos Alunos', href: '/dashboard/analytics/student-progress', icon: "BarChart3" },
     { name: 'Desempenho dos Instrutores', href: '/dashboard/analytics/instructor-performance', icon: "TrendingUp" },
     { name: 'Comparativo de Períodos', href: '/dashboard/analytics/period-comparison', icon: "PieChart" },
