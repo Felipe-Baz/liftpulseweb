@@ -2,7 +2,7 @@
 
 import { GymProfileForm } from "./gym-profile-form";
 import { useEffect, useState } from "react";
-import { fetchBranchDetails } from "@/actions/fetch-branches";
+import { fetchBranchDetails } from "@/actions/branches";
 import { useBranch } from "@/contexts/branch-context";
 import { Branch } from "@/types/branch";
 

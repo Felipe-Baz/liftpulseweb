@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import type { Branch } from '@/types/branch'
-import { fetchBranches } from '@/actions/fetch-branches'
+import { fetchBranches } from '@/actions/branches'
 
 interface BranchContextType {
   selectedBranch: Branch | null

@@ -65,3 +65,51 @@ export async function fetchBranchDetails(branchId: string): Promise<Branch | nul
     return null; // Retorna null caso a requisição falhe
   }
 }
+
+export async function updateBranch(
+  branchId: string,
+  name: string | null,
+  description: string | null,
+  address: string | null,
+  phoneNumber: string | null,
+  openingHours: string | null,
+  instagram: string | null,
+  facebook: string | null,
+  website: string | null,
+  image: string | null
+): Promise<Branch | null> {
+  try {
+    const response = await api.put(`/api/v1/gym/branches/${branchId}`, {
+      nome: name,
+      description,
+      localizacao: address,
+      phonenumber: phoneNumber,
+      openinghours: openingHours,
+      instagram,
+      facebook,
+      website,
+      imagem: image,
+    });
+    
+    const branchData = response.data;
+    
+    // Mapeando os dados da resposta para o formato esperado
+    return {
+      id: branchData.id,
+      name: branchData.nome,
+      address: branchData.localizacao,
+      description: branchData.description,
+      openingHours: branchData.openinghours,
+      facebook: branchData.facebook,
+      createdAt: branchData.created_at,
+      updatedAt: branchData.updated_at,
+      phoneNumber: branchData.phonenumber,
+      instagram: branchData.instagram,
+      website: branchData.website,
+      image: branchData.imagem,
+    };
+  } catch (error) {
+    console.error('Erro ao atualizar a filial:', error);
+    return null; // Retorna null caso a requisição falhe
+  }
+}

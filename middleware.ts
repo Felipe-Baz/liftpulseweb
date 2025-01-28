@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { fetchBranches } from '@/actions/fetch-branches'; // Supondo que esta função esteja disponível no servidor
+import { fetchBranches } from '@/actions/branches'; // Supondo que esta função esteja disponível no servidor
 
 export async function middleware(request: NextRequest) {
   const { pathname } = new URL(request.url);

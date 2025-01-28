@@ -10,6 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Image from "next/image"
+import { updateBranch } from "@/actions/branches"
 
 const profileFormSchema = z.object({
   name: z.string().min(2, {
@@ -49,8 +50,32 @@ export function GymProfileForm({ initialData }: GymProfileFormProps) {
   })
 
   async function onSubmit(values: z.infer<typeof profileFormSchema>) {
-    // TODO: Implement form submission
-    console.log(values)
+    console.log('====================================');
+    console.log("submit");
+    console.log('====================================');
+    try {
+      const updatedBranch = await updateBranch(
+        initialData.id,
+        values.name,
+        values.description,
+        values.address,
+        values.phone,
+        values.openingHours,
+        values.instagram || "",
+        values.facebook || "",
+        values.website || "",
+        ""
+      );
+      
+      if (updatedBranch) {
+        // Lógica após a atualização bem-sucedida, como feedback para o usuário
+
+        //TODO: Adicionar logica para imagem de perfil
+        console.log("Filial atualizada:", updatedBranch);
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar a filial:", error);
+    }
   }
 
   return (
@@ -227,9 +252,10 @@ export function GymProfileForm({ initialData }: GymProfileFormProps) {
               )}
             />
           </div>
+
+          <Button type="submit">Salvar Alterações</Button>
         </div>
 
-        <Button type="submit">Salvar Alterações</Button>
       </form>
     </Form>
   )

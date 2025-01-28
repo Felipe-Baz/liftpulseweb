@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { addBranch } from "@/actions/fetch-branches"
+import { addBranch } from "@/actions/branches"
 
 export default function RegisterGym() {
     const router = useRouter()
