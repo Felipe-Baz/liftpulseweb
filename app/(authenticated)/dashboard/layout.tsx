@@ -46,31 +46,19 @@ const navigation = {
 
 async function DashboardLayout({
   children,
-  searchParams,
 }: {
   children: React.ReactNode;
-  searchParams: { branchId?: string } | undefined;
 }) {
-  // Fetch initial data on the server
-  const branches = await fetchBranches();
-
-  // Safely determine the initial branch
-  const initialBranch =
-    searchParams?.branchId
-      ? branches.find((b) => b.id === searchParams.branchId)
-      : branches[0];
-
   return (
-    <BranchProvider initialBranches={branches} initialBranch={initialBranch}>
+    <BranchProvider>
       <div className="flex h-screen">
         {/* Sidebar */}
         <div className="hidden w-70 flex-shrink-0 flex-col md:flex border-r">
           <div className="flex h-16 items-center justify-center border-b px-4">
             <BranchSelector />
           </div>
-          <Sidebar navigation={navigation} initialBranch={initialBranch} />
+          <Sidebar navigation={navigation} />
         </div>
-
         {/* Main Content */}
         <div className="flex flex-1 flex-col overflow-hidden">
           <main className="flex-1 overflow-y-auto bg-muted px-6 py-8 ">
