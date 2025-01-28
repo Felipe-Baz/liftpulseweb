@@ -21,8 +21,8 @@ const formSchema = z.object({
   telefone: z.string().min(10, "Telefone deve ter pelo menos 10 dígitos"),
   status: z.enum(["active", "inactive"]),
   password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
-  branch_id: z.string().min(1, "ID da filial é obrigatório"),
 })
+
 
 export default function RegisterInstructorPage() {
   const router = useRouter()
@@ -35,6 +35,7 @@ export default function RegisterInstructorPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       status: "active",
+      imagem: "undefined",
     },
   })
 
