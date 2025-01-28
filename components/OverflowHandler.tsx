@@ -9,11 +9,6 @@ export default function OverflowHandler({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-
-  console.log('====================================');
-  console.log(pathname);
-  console.log('====================================');
-
   // Define a classe de overflow dinamicamente
   const bodyClass = cn(
     pathname === "/" ? "overflow-y-auto" : "overflow-y-hidden"
