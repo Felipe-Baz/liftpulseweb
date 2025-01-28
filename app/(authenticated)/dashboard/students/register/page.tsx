@@ -65,7 +65,7 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Cadastrar Novo Aluno</h1>
+      <h1 className="text-2xl font-bold mb-6">Cadastrar Novos Alunos</h1>
 
       <Card>
         <CardContent>
