@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     LayoutDashboard,
     Package,
@@ -59,6 +59,13 @@ const sectionLabels: Record<string, string> = {
 
 export default function Sidebar({ navigation, initialBranch }: any) {
     const [expandedSection, setExpandedSection] = useState<string | null>("overview");
+    const [branchId, setBranchId] = useState<string | null>(initialBranch?.id || null); // state for storing branchId
+
+    useEffect(() => {
+        if (initialBranch?.id) {
+            setBranchId(initialBranch.id); // set the branchId when initialBranch is available
+        }
+    }, [initialBranch]); // dependency on initialBranch to update branchId when it's loaded
 
     const toggleSection = (section: string) => {
         setExpandedSection((prev) => (prev === section ? null : section));
@@ -89,7 +96,7 @@ export default function Sidebar({ navigation, initialBranch }: any) {
                                     return (
                                         <a
                                             key={item.name}
-                                            href={`${item.href}?branchId=${initialBranch?.id}`}
+                                            href={`${item.href}`}
                                             className="flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-100"
                                         >
                                             {Icon && <Icon className="mr-2 h-4 w-4" />}

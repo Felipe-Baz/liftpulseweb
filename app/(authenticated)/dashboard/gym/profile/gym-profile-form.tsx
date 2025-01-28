@@ -10,6 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Image from "next/image"
+import { updateBranch } from "@/actions/branches"
 
 const profileFormSchema = z.object({
   name: z.string().min(2, {
@@ -25,14 +26,56 @@ const profileFormSchema = z.object({
   website: z.string().url().optional(),
 })
 
-export function GymProfileForm() {
+interface GymProfileFormProps {
+  initialData: {
+    id: string;
+    name: string;
+    address?: string;
+    description?: string;
+    openingHours?: string;
+    facebook?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    phoneNumber?: string;
+    instagram?: string;
+    website?: string;
+    image?: string;
+  }
+}
+
+export function GymProfileForm({ initialData }: GymProfileFormProps) {
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
+    defaultValues: initialData,
   })
 
   async function onSubmit(values: z.infer<typeof profileFormSchema>) {
-    // TODO: Implement form submission
-    console.log(values)
+    console.log('====================================');
+    console.log("submit");
+    console.log('====================================');
+    try {
+      const updatedBranch = await updateBranch(
+        initialData.id,
+        values.name,
+        values.description,
+        values.address,
+        values.phone,
+        values.openingHours,
+        values.instagram || "",
+        values.facebook || "",
+        values.website || "",
+        ""
+      );
+      
+      if (updatedBranch) {
+        // Lógica após a atualização bem-sucedida, como feedback para o usuário
+
+        //TODO: Adicionar logica para imagem de perfil
+        console.log("Filial atualizada:", updatedBranch);
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar a filial:", error);
+    }
   }
 
   return (
@@ -42,12 +85,13 @@ export function GymProfileForm() {
           <div className="flex items-center gap-4">
             <div className="relative h-32 w-32">
               <Image
-                src="/placeholder.svg"
+                src={initialData.image && initialData.image !== "" ? initialData.image : "/placeholder.png"}
                 alt="Logo da academia"
                 className="rounded-lg object-cover"
                 width={128}
                 height={128}
               />
+
               <Button type="button" variant="secondary" size="icon" className="absolute bottom-2 right-2">
                 <Upload className="h-4 w-4" />
               </Button>
@@ -81,13 +125,18 @@ export function GymProfileForm() {
               <FormItem>
                 <FormLabel>Descrição</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Descreva sua academia..." {...field} />
+                  <Textarea
+                    placeholder="Descreva sua academia..."
+                    {...field}
+                    value={field.value ?? ""}
+                  />
                 </FormControl>
                 <FormDescription>Máximo de 500 caracteres</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
 
           <div className="grid gap-4 md:grid-cols-2">
             <FormField
@@ -97,7 +146,11 @@ export function GymProfileForm() {
                 <FormItem>
                   <FormLabel>Endereço</FormLabel>
                   <FormControl>
-                    <Input placeholder="Digite o endereço" {...field} />
+                    <Input
+                      placeholder="Digite o endereço"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -111,7 +164,11 @@ export function GymProfileForm() {
                 <FormItem>
                   <FormLabel>Telefone</FormLabel>
                   <FormControl>
-                    <Input placeholder="(00) 00000-0000" {...field} />
+                    <Input
+                      placeholder="(00) 00000-0000"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -126,7 +183,11 @@ export function GymProfileForm() {
               <FormItem>
                 <FormLabel>Horário de Funcionamento</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Seg-Sex: 6h-22h, Sáb: 8h-18h" {...field} />
+                  <Input
+                    placeholder="Ex: Seg-Sex: 6h-22h, Sáb: 8h-18h"
+                    {...field}
+                    value={field.value ?? ""} // Garante que o value nunca seja null
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -143,7 +204,11 @@ export function GymProfileForm() {
                   <FormItem>
                     <FormLabel>Instagram</FormLabel>
                     <FormControl>
-                      <Input placeholder="@suaacademia" {...field} />
+                      <Input
+                        placeholder="@suaacademia"
+                        {...field}
+                        value={field.value ?? ""} // Garante que o value nunca seja null
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -157,7 +222,11 @@ export function GymProfileForm() {
                   <FormItem>
                     <FormLabel>Facebook</FormLabel>
                     <FormControl>
-                      <Input placeholder="facebook.com/suaacademia" {...field} />
+                      <Input
+                        placeholder="facebook.com/suaacademia"
+                        {...field}
+                        value={field.value ?? ""} // Garante que o value nunca seja null
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -172,16 +241,21 @@ export function GymProfileForm() {
                 <FormItem>
                   <FormLabel>Website</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://www.suaacademia.com" {...field} />
+                    <Input
+                      placeholder="https://www.suaacademia.com"
+                      {...field}
+                      value={field.value ?? ""} // Garante que o value nunca seja null
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+
+          <Button type="submit">Salvar Alterações</Button>
         </div>
 
-        <Button type="submit">Salvar Alterações</Button>
       </form>
     </Form>
   )

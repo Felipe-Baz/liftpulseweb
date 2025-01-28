@@ -3,7 +3,7 @@
 import * as React from "react"
 import { ChevronDown, Loader2, Plus } from 'lucide-react'
 import { Branch } from "@/types/branch"
-import { addBranch } from "@/actions/fetch-branches"
+import { addBranch } from "@/actions/branches"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
