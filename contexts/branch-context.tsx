@@ -38,7 +38,7 @@ export function BranchProvider({
   useEffect(() => {
     const storedBranches = localStorage.getItem('branches')
     
-    if (storedBranches) {
+    if (storedBranches && storedBranches != '[]') {
       setBranches(JSON.parse(storedBranches))
       const branchId = searchParams.get('branchId')
       const storedBranch = JSON.parse(storedBranches).find((b: Branch) => b.id === branchId) || JSON.parse(storedBranches)[0]

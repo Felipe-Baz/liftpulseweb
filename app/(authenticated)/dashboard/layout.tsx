@@ -1,5 +1,4 @@
 import Sidebar from '@/components/CustomSidebar'
-import { fetchBranches } from '@/actions/fetch-branches'
 import { BranchSelector } from '@/components/branch-selector'
 import { BranchProvider } from '@/contexts/branch-context'
 

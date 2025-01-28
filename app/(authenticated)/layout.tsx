@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ColorModeSwitcher } from '@/components/color-mode-switcher';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { useBranch } from '@/contexts/branch-context';
 
 export default function AuthenticatedLayout({
     children,
@@ -12,11 +13,15 @@ export default function AuthenticatedLayout({
     children: ReactNode;
 }) {
     const router = useRouter();
+    const { setSelectedBranch } = useBranch();  // Desestruturando para resetar o branch selecionado
 
     const handleLogout = async () => {
         try {
             // Faz o logout do Firebase
             await signOut(auth);
+
+            // Limpa o contexto de branches e remove dados do localStorage
+            localStorage.clear();  // Apaga dados do localStorage
 
             const response = await fetch('/api/auth/logout', {
                 method: 'POST',

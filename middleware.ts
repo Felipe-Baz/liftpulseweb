@@ -1,25 +1,38 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { fetchBranches } from '@/actions/fetch-branches'; // Supondo que esta função esteja disponível no servidor
 
-export function middleware(request: NextRequest) {
-  const { pathname, searchParams } = new URL(request.url)
+export async function middleware(request: NextRequest) {
+  const { pathname } = new URL(request.url);
   const authToken = request.cookies.get('authToken');
-
-  // Check if the user is trying to access a protected route
+  
+  // Verifica se o usuário está autenticado
   if (pathname.startsWith('/dashboard')) {
     if (!authToken) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
-    // If no branchId is present, redirect to the first branch (you might want to fetch this from an API)
-    if (!searchParams.has('branchId')) {
-      const url = new URL(request.url)
-      url.searchParams.set('branchId', '1') // Default branch ID
-      return NextResponse.redirect(url)
+    // Chama a API para obter as branches, ou pode buscar de um cookie ou sessão
+    let branches: any = [];
+    try {
+      branches = await fetchBranches(); // Pode usar uma função API para buscar as branches no servidor
+    } catch (error) {
+      console.error('Erro ao carregar as academias:', error);
+    }
+
+    // Se não houver branches, redireciona para a página de criação
+    if (branches.length === 0) {
+      return NextResponse.redirect(new URL('/createFirstGym', request.url));
+    }
+
+    // Se não houver uma filial selecionada, redireciona para a primeira filial
+    const branchId = new URL(request.url).searchParams.get('branchId');
+    if (!branchId && branches.length > 0) {
+      return NextResponse.redirect(new URL(`/dashboard?branchId=${branches[0].id}`, request.url));
     }
   }
 
-  // If the user is authenticated and trying to access login page, redirect to dashboard
+  // Redireciona para o dashboard se o usuário estiver autenticado e tentar acessar a página de login
   if (pathname === '/login' && authToken) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
@@ -28,8 +41,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/login'
-  ]
+  matcher: ['/dashboard/:path*', '/login'],
 };

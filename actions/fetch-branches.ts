@@ -3,9 +3,6 @@
 import api from "@/lib/api/axios-instance";
 import { Branch } from "@/types/branch"
 
-// Simulated delay to mimic API call
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
 export async function fetchBranches(): Promise<Branch[]> {
     try {
       const response = await api.get('/api/v1/gym/branches');
@@ -23,11 +20,11 @@ export async function fetchBranches(): Promise<Branch[]> {
     }
   }
 
-export async function addBranch(name: string): Promise<Branch> {
+export async function addBranch(name: string, address: string | null): Promise<Branch> {
     try {
         const response = await api.post('/api/v1/gym/branches', {
             "nome": name,
-            "localizacao": ""
+            "localizacao": address
         });
         const branchData = response.data;
     
@@ -41,4 +38,30 @@ export async function addBranch(name: string): Promise<Branch> {
         console.error('Erro ao buscar as filiais:', error);
         throw new Error('useBranch must be used within a BranchProvider')
       }
+}
+
+export async function fetchBranchDetails(branchId: string): Promise<Branch | null> {
+  try {
+    const response = await api.get(`/api/v1/gym/branches/${branchId}`);
+    const branchData = response.data;
+
+    // Mapeando os dados da resposta para o formato esperado
+    return {
+      id: branchData.id,
+      name: branchData.nome,
+      address: branchData.localizacao,
+      description: branchData.description,
+      openingHours: branchData.openinghours,
+      facebook: branchData.facebook,
+      createdAt: branchData.created_at,
+      updatedAt: branchData.updated_at,
+      phoneNumber: branchData.phonenumber,
+      instagram: branchData.instagram,
+      website: branchData.website,
+      image: branchData.imagem,
+    };
+  } catch (error) {
+    console.error('Erro ao buscar os detalhes da filial:', error);
+    return null; // Retorna null caso a requisição falhe
+  }
 }
