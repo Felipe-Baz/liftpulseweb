@@ -54,7 +54,7 @@ export function CreateGroupDialog() {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Group</DialogTitle>
-          <DialogDescription>Create a new group to organize users. Click save when you're done.</DialogDescription>
+          <DialogDescription>Create a new group to organize users. Click save when you re done.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

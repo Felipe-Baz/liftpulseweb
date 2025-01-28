@@ -58,7 +58,7 @@ export function CreateStudentDialog() {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create User</DialogTitle>
-          <DialogDescription>Add a new user to the system. Click save when you're done.</DialogDescription>
+          <DialogDescription>Add a new user to the system. Click save when you re done.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
