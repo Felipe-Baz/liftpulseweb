@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import { useState } from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -12,11 +12,11 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
-import Link from "next/link"
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -25,13 +25,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import type { Instructor } from "@/types/instructor"
-import { DetailsInstructors } from "./details-instructors"
-
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import type { Instructor } from "@/types/instructor";
+import { DetailsInstructors } from "./details-instructors";
 
 const data: Instructor[] = [
   {
@@ -44,7 +43,40 @@ const data: Instructor[] = [
     phone: "029237263232",
     registration: "",
   },
-]
+];
+
+const ActionCell = ({ row }: { row: any }) => {
+  const [showDetailsInstructors, setShowDetailsInstructors] = useState(false);
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Abrir menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Ações</DropdownMenuLabel>
+          <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
+            Copiar ID do Instrutor
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setShowDetailsInstructors(true)}>
+            Ver detalhes
+          </DropdownMenuItem>
+          <DropdownMenuItem>Editar instrutor</DropdownMenuItem>
+          <DropdownMenuItem className="text-destructive">Deletar instrutor</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DetailsInstructors
+        isOpen={showDetailsInstructors}
+        onClose={() => setShowDetailsInstructors(false)}
+      />
+    </>
+  );
+};
 
 export const columns: ColumnDef<Instructor>[] = [
   {
@@ -76,15 +108,15 @@ export const columns: ColumnDef<Instructor>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as "active" | "inactive"
-      return <Badge variant={status === "active" ? "default" : "secondary"}>{status}</Badge>
+      const status = row.getValue("status") as "active" | "inactive";
+      return <Badge variant={status === "active" ? "default" : "secondary"}>{status}</Badge>;
     },
   },
   {
     accessorKey: "groups",
     header: "Grupos",
     cell: ({ row }) => {
-      const groups = row.getValue("groups") as string[]
+      const groups = row.getValue("groups") as string[];
       return (
         <div className="flex gap-1">
           {groups.map((group) => (
@@ -93,50 +125,19 @@ export const columns: ColumnDef<Instructor>[] = [
             </Badge>
           ))}
         </div>
-      )
+      );
     },
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const [showDetailsInstructors, setShowDetailsInstructors] = React.useState(false)
-
-      return (
-        <>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Abrir menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Ações</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
-                Copiar ID do Instrutor
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setShowDetailsInstructors(true)}>
-                Ver detalhes
-              </DropdownMenuItem>
-              <DropdownMenuItem>Editar instrutor</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">Deletar instrutor</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DetailsInstructors
-            isOpen={showDetailsInstructors}
-            onClose={() => setShowDetailsInstructors(false)}
-          />
-        </>
-      )
-    },
+    cell: ({ row }) => <ActionCell row={row} />,
   },
-]
+];
 
 export function InstructorTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const table = useReactTable({
     data,
@@ -153,7 +154,7 @@ export function InstructorTable() {
       columnFilters,
       columnVisibility,
     },
-  })
+  });
 
   return (
     <div className="w-full">
@@ -248,5 +249,5 @@ export function InstructorTable() {
         </div>
       </div>
     </div>
-  )
+  );
 }
