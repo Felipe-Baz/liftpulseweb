@@ -24,12 +24,6 @@ export async function middleware(request: NextRequest) {
     if (branches.length === 0) {
       return NextResponse.redirect(new URL('/createFirstGym', request.url));
     }
-
-    // Se não houver uma filial selecionada, redireciona para a primeira filial
-    const branchId = new URL(request.url).searchParams.get('branchId');
-    if (!branchId && branches.length > 0) {
-      return NextResponse.redirect(new URL(`/dashboard?branchId=${branches[0].id}`, request.url));
-    }
   }
 
   // Redireciona para o dashboard se o usuário estiver autenticado e tentar acessar a página de login

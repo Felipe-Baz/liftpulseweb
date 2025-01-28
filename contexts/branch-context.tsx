@@ -37,7 +37,6 @@ export function BranchProvider({
   // Load branches from localStorage or API
   useEffect(() => {
     const storedBranches = localStorage.getItem('branches')
-    
     if (storedBranches && storedBranches != '[]') {
       setBranches(JSON.parse(storedBranches))
       const branchId = searchParams.get('branchId')
@@ -45,6 +44,9 @@ export function BranchProvider({
       setSelectedBranch(storedBranch)
       setIsLoading(false)
     } else {
+      console.log('====================================');
+      console.log(storedBranches);
+      console.log('====================================');
       const loadBranches = async () => {
         try {
           const data = await fetchBranches()
