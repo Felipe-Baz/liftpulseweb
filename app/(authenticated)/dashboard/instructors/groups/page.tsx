@@ -27,7 +27,7 @@ export default function GroupsPage() {
   return (
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Grupos de Instrutors</h1>
+          <h1 className="text-2xl font-bold">Grupos de Instrutores</h1>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button>
