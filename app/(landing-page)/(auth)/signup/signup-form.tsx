@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from 'lucide-react'
+import { addUser } from "@/actions/auth"
 
 export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -20,9 +21,9 @@ export default function SignUpForm() {
     setError("")
 
     const formData = new FormData(event.currentTarget)
-    const name = formData.get("name")
-    const email = formData.get("email")
-    const password = formData.get("password")
+    const name = formData.get("name") as string
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
     const confirmPassword = formData.get("confirmPassword")
 
     try {
@@ -31,7 +32,7 @@ export default function SignUpForm() {
       }
 
       // Simula uma chamada de API
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await addUser(name, password, email);
 
       // Aqui você adicionaria sua lógica de criação de conta
       router.push("/login")
