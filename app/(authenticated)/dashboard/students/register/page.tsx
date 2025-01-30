@@ -35,11 +35,7 @@ const formSchema = z.object({
   groups: z.array(z.string()),
 })
 
-interface StudentRegisterFormProps {
-  branchId: string
-}
-
-export default function RegisterPage({ branchId }: StudentRegisterFormProps) {
+export default function RegisterPage() {
   const router = useRouter();
   const [showQrModal, setShowQrModal] = useState(false);
   const [qrCode, setQrCode] = useState("");
