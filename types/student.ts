@@ -7,9 +7,10 @@ export interface Student {
   phonenumber: string
   gender: "M" | "F"
   goal: "emagrecer" | "hipertrofia" | "secar" | "flexibilidade" | "massa_magra" | "Apreder_o_basico"
-  activityLevel: "beginner" | "intermediate" | "advanced" | "true_beast"
+  activity_level: "beginner" | "intermediate" | "advanced" | "true_beast"
   groups: string[]
-  status: "active" | "inactive"
+  status: "active" | "inactive" | "blocked",
+  qrcode: string | null | undefined
 }
 
 export interface StudentGroup {

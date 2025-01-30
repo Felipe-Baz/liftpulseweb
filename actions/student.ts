@@ -6,13 +6,13 @@ import { Student } from "@/types/student";
 export async function addStudent(
     username: string,
     email: string,
-    profile_image: string,
     phonenumber: string,
     branch_id: string,
     birthdate: string,
     gender: "M" | "F",
     goal: "emagrecer" | "hipertrofia" | "secar" | "flexibilidade" | "massa_magra" | "Apreder_o_basico",
-    activityLevel: "beginner" | "intermediate" | "advanced" | "true_beast",
+    activity_level: "beginner" | "intermediate" | "advanced" | "true_beast",
+    profile_image: string,
 ): Promise<Student> {
     try {
         const response = await api.post("/api/v1/student", {
@@ -24,7 +24,7 @@ export async function addStudent(
             branch_id,
             birthdate,
             gender,
-            activityLevel,
+            activity_level,
             goal
         });
         const studentData = response.data.student;
@@ -40,8 +40,9 @@ export async function addStudent(
             birthdate: studentData.birthdate,
             gender: studentData.gender,
             goal: studentData.goal,
-            activityLevel: studentData.activityLevel,
-            groups: []
+            activity_level: studentData.activityLevel,
+            groups: [],
+            qrcode: qrcodeData,
         };
     } catch (error) {
         console.error("Erro ao adicionar aluno:", error);
@@ -59,10 +60,13 @@ export async function getStudentsByBranch(branchId: string): Promise<Student[]> 
             id: student.id,
             username: student.username,
             email: student.email,
-            phoneNumber: student.phonenumber,
-            profileImage: student.profile_image,
+            phonenumber: student.phonenumber,
+            profile_image: student.profile_image,
             status: student.status,
             birthdate: student.birthdate,
+            gender: student.gender,
+            goal: student.goal,
+            activity_level: student.activity_level,
         }));
     } catch (error) {
         console.error('Erro ao buscar os alunos:', error);
@@ -86,8 +90,9 @@ export async function getStudentDetails(studentId: string): Promise<Student> {
             birthdate: studentData.birthdate,
             gender: studentData.gender,
             goal: studentData.goal,
-            activityLevel: studentData.activityLevel,
-            groups: []
+            activity_level: studentData.activityLevel,
+            groups: [],
+            qrcode: null
         };
     } catch (error) {
         console.error('Erro ao buscar os detalhes do aluno:', error);
@@ -129,8 +134,9 @@ export async function updateStudent(
             birthdate: studentData.birthdate,
             gender: studentData.gender,
             goal: studentData.goal,
-            activityLevel: studentData.activityLevel,
-            groups: []
+            activity_level: studentData.activityLevel,
+            groups: [],
+            qrcode: null
         };
     } catch (error) {
         console.error('Erro ao atualizar o aluno:', error);
