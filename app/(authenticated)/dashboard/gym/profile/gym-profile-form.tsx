@@ -19,7 +19,6 @@ const profileFormSchema = z.object({
   description: z.string().max(500),
   address: z.string().min(5),
   phone: z.string().min(10),
-  email: z.string().email(),
   openingHours: z.string(),
   instagram: z.string().optional(),
   facebook: z.string().optional(),
@@ -50,9 +49,7 @@ export function GymProfileForm({ initialData }: GymProfileFormProps) {
   })
 
   async function onSubmit(values: z.infer<typeof profileFormSchema>) {
-    console.log('====================================');
-    console.log("submit");
-    console.log('====================================');
+
     try {
       const updatedBranch = await updateBranch(
         initialData.id,
@@ -66,12 +63,11 @@ export function GymProfileForm({ initialData }: GymProfileFormProps) {
         values.website || "",
         ""
       );
-      
+
       if (updatedBranch) {
         // Lógica após a atualização bem-sucedida, como feedback para o usuário
 
         //TODO: Adicionar logica para imagem de perfil
-        console.log("Filial atualizada:", updatedBranch);
       }
     } catch (error) {
       console.error("Erro ao atualizar a filial:", error);
@@ -80,7 +76,17 @@ export function GymProfileForm({ initialData }: GymProfileFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit(
+          (values) => {
+            onSubmit(values);
+          },
+          (errors) => {
+            console.log("❌ Erros no formulário:", errors);
+          }
+        )();
+      }} className="space-y-8">
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <div className="relative h-32 w-32">
@@ -253,7 +259,12 @@ export function GymProfileForm({ initialData }: GymProfileFormProps) {
             />
           </div>
 
-          <Button type="submit">Salvar Alterações</Button>
+          <Button
+            type="submit"
+            onClick={() => form.handleSubmit(onSubmit)()}
+          >
+            Salvar Alterações
+          </Button>
         </div>
 
       </form>
