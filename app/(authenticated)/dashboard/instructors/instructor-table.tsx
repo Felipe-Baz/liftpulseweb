@@ -35,13 +35,13 @@ import { DetailsInstructors } from "./details-instructors";
 const data: Instructor[] = [
   {
     id: "1",
-    name: "felipe baz",
+    username: "felipe baz",
     email: "bundinha@gordao.com",
     status: "active",
     groups: ["IT", "Management"],
-    birthDate: "30/10/2001",
-    phone: "029237263232",
-    registration: "",
+    birthdate: "30/10/2001",
+    phonenumber: "029237263232",
+    profile_image: ""
   },
 ];
 

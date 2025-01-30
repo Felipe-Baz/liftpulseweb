@@ -1,10 +1,10 @@
 export interface Instructor {
     id: string
-    name: string
+    username: string
     email: string
-    registration: string
-    birthDate: string
-    phone: string
+    birthdate: string | null
+    phonenumber: string | null
+    profile_image: string | null
     groups: string[]
     status: "active" | "inactive"
   }
