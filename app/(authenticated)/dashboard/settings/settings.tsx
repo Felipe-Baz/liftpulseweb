@@ -1,5 +1,6 @@
 "use client"
 
+import { useTheme } from "next-themes";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Bell, Laptop, Moon, Shield, Sun, Trash2, User } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -22,15 +23,12 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useEffect, useState } from "react";
 
 const appearanceFormSchema = z.object({
   theme: z.enum(["light", "dark", "system"], {
     required_error: "Please select a theme.",
   }),
-  fontSize: z.enum(["small", "medium", "large"], {
-    required_error: "Please select a font size.",
-  }),
-  reducedMotion: z.boolean().default(false),
 })
 
 const notificationsFormSchema = z.object({
@@ -50,12 +48,14 @@ const deleteAccountFormSchema = z.object({
 })
 
 export function Settings() {
+  const { theme, setTheme, resolvedTheme } = useTheme();
+
+  const currentTheme = (resolvedTheme as "light" | "dark" | "system") || "system";
+
   const appearanceForm = useForm<z.infer<typeof appearanceFormSchema>>({
     resolver: zodResolver(appearanceFormSchema),
     defaultValues: {
-      theme: "system",
-      fontSize: "medium",
-      reducedMotion: false,
+      theme: currentTheme,
     },
   })
 
@@ -72,6 +72,10 @@ export function Settings() {
   const deleteAccountForm = useForm<z.infer<typeof deleteAccountFormSchema>>({
     resolver: zodResolver(deleteAccountFormSchema),
   })
+
+  useEffect(() => {
+    appearanceForm.setValue("theme", (theme as "light" | "dark" | "system") || "system");
+  }, [theme, appearanceForm]);
 
   return (
     <Tabs defaultValue="account" className="space-y-6">
@@ -277,7 +281,10 @@ export function Settings() {
                       <FormLabel>Tema</FormLabel>
                       <FormControl>
                         <RadioGroup
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setTheme(value);
+                          }}
                           defaultValue={field.value}
                           className="grid grid-cols-3 gap-4"
                         >
@@ -311,69 +318,9 @@ export function Settings() {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={appearanceForm.control}
-                  name="fontSize"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tamanho da Fonte</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="grid grid-cols-3 gap-4"
-                        >
-                          <Label
-                            htmlFor="small"
-                            className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
-                          >
-                            <RadioGroupItem value="small" id="small" className="sr-only" />
-                            <span className="text-sm">Aa</span>
-                            Pequeno
-                          </Label>
-                          <Label
-                            htmlFor="medium"
-                            className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
-                          >
-                            <RadioGroupItem value="medium" id="medium" className="sr-only" />
-                            <span className="text-base">Aa</span>
-                            Médio
-                          </Label>
-                          <Label
-                            htmlFor="large"
-                            className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
-                          >
-                            <RadioGroupItem value="large" id="large" className="sr-only" />
-                            <span className="text-lg">Aa</span>
-                            Grande
-                          </Label>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={appearanceForm.control}
-                  name="reducedMotion"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">Reduzir Animações</FormLabel>
-                        <FormDescription>Desative ou reduza animações do sistema</FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
               </form>
             </Form>
           </CardContent>
-          <CardFooter>
-            <Button>Salvar Preferências</Button>
-          </CardFooter>
         </Card>
       </TabsContent>
 
