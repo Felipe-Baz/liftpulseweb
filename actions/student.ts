@@ -8,7 +8,6 @@ export async function addStudent(
     email: string,
     profile_image: string,
     phonenumber: string,
-    password: string,
     branch_id: string,
     birthdate: string,
     gender: "M" | "F",
@@ -22,14 +21,14 @@ export async function addStudent(
             profile_image,
             phonenumber,
             status: "active",
-            password,
             branch_id,
             birthdate,
             gender,
             activityLevel,
             goal
         });
-        const studentData = response.data;
+        const studentData = response.data.student;
+        const qrcodeData = response.data.qr_code;
 
         return {
             id: studentData.id,
@@ -47,7 +46,7 @@ export async function addStudent(
     } catch (error) {
         console.error("Erro ao adicionar aluno:", error);
         throw new Error("Falha ao adicionar aluno");
-    }
+    } 
 }
 
 export async function getStudentsByBranch(branchId: string): Promise<Student[]> {
