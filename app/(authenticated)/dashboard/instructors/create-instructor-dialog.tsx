@@ -28,12 +28,9 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Email inválido",
   }),
-  role: z.string(),
   status: z.enum(["ativo", "inativo"]),
   birthdate: z.string(),
   phonenumber: z.string(),
-  groups: z.array(z.string()),
-  profile_image: z.string(),
   password: z.string(),
 });
 
@@ -52,10 +49,8 @@ export function CreateInstructorDialog({ branchId }: InstructorDialogProps) {
       email: "",
       birthdate: "",
       phonenumber: "",
-      groups: [],
       status: "ativo",
-      profile_image: ""
-    },
+    }
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -69,8 +64,8 @@ export function CreateInstructorDialog({ branchId }: InstructorDialogProps) {
         values.phonenumber,
         branchId,
         values.birthdate,
+        "",
         values.password,
-        values.profile_image
       );
     } catch (error) {
       console.error("Erro ao criar instrutor:", error);
@@ -109,7 +104,7 @@ export function CreateInstructorDialog({ branchId }: InstructorDialogProps) {
                 <FormItem>
                   <FormLabel>Nome</FormLabel>
                   <FormControl>
-                    <Input placeholder="João Silva" {...field} />
+                    <Input placeholder="Digite o nome..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -122,30 +117,8 @@ export function CreateInstructorDialog({ branchId }: InstructorDialogProps) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="joao@example.com" {...field} />
+                    <Input placeholder="Digite o email..." {...field} />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Função</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione uma função" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="admin">Administrador</SelectItem>
-                      <SelectItem value="user">Usuário</SelectItem>
-                      <SelectItem value="viewer">Visualizador</SelectItem>
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
