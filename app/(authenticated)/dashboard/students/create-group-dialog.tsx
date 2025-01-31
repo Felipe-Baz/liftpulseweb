@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Users } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -46,8 +46,8 @@ export function CreateGroupDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          <Users className="mr-2 h-4 w-4" />
+        <Button>
+          <Plus className="mr-2 h-4 w-4" />
           New Group
         </Button>
       </DialogTrigger>

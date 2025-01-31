@@ -17,7 +17,7 @@ import { useStudents } from '@/contexts/student-context'
 export default function DetailsPage() {
   const { students, groups } = useStudents()
   const [searchTerm, setSearchTerm] = useState('')
-  const [searchType, setSearchType] = useState<'name' | 'registration' | 'email'>('name')
+  const [searchType, setSearchType] = useState<'username' | 'email'>('username')
   
   const filteredStudent = students.find(student => {
     const searchValue = student[searchType].toLowerCase()
@@ -29,14 +29,13 @@ export default function DetailsPage() {
         <div className="flex gap-4">
           <Select
             value={searchType}
-            onValueChange={(value: 'name' | 'registration' | 'email') => setSearchType(value)}
+            onValueChange={(value: 'username' | 'email') => setSearchType(value)}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Buscar por" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="name">Nome</SelectItem>
-              <SelectItem value="registration">Matrícula</SelectItem>
+              <SelectItem value="username">Nome</SelectItem>
               <SelectItem value="email">Email</SelectItem>
             </SelectContent>
           </Select>
@@ -59,28 +58,24 @@ export default function DetailsPage() {
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <div className="font-medium text-sm text-muted-foreground mb-1">Nome</div>
-                    <div>{filteredStudent.name}</div>
+                    <div>{filteredStudent.username}</div>
                   </div>
                   <div>
                     <div className="font-medium text-sm text-muted-foreground mb-1">Email</div>
                     <div>{filteredStudent.email}</div>
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm text-muted-foreground mb-1">Matrícula</div>
-                    <div>{filteredStudent.registration}</div>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-3 gap-4 mt-4">
                   <div>
                     <div className="font-medium text-sm text-muted-foreground mb-1">Telefone</div>
-                    <div>{filteredStudent.phone}</div>
+                    <div>{filteredStudent.phonenumber}</div>
                   </div>
                   <div>
                     <div className="font-medium text-sm text-muted-foreground mb-1">
                       Data de Nascimento
                     </div>
-                    <div>{new Date(filteredStudent.birthDate).toLocaleDateString()}</div>
+                    <div>{new Date(filteredStudent.birthdate).toLocaleDateString()}</div>
                   </div>
                   <div>
                     <div className="font-medium text-sm text-muted-foreground mb-1">Status</div>

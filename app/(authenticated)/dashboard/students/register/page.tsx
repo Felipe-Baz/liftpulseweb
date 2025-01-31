@@ -1,185 +1,273 @@
 "use client"
-
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { format } from 'date-fns'
-import { CalendarIcon } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useStudents } from '@/contexts/student-context'
-import { Card, CardContent } from '@/components/ui/card'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Card, CardContent } from "@/components/ui/card"
+import { addStudent } from "@/actions/student"
+import { useState } from "react"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import QRCode from "react-qr-code"
+import { useBranch } from "@/contexts/branch-context"
 
 const formSchema = z.object({
-  name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
+  username: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
   email: z.string().email("Email inválido"),
-  registration: z.string().min(4, "Matrícula deve ter pelo menos 4 caracteres"),
-  birthDate: z.string(),
-  phone: z.string().min(10, "Telefone deve ter pelo menos 10 dígitos"),
-  status: z.enum(["active", "inactive"]),
+  birthdate: z.string().min(1, "Data de nascimento é obrigatória"),
+  phonenumber: z.string().min(10, "Telefone deve ter pelo menos 10 dígitos"),
+  gender: z.enum(["M", "F"], {
+    required_error: "Por favor selecione o gênero",
+  }),
+  goal: z.enum(["emagrecer", "hipertrofia", "secar", "flexibilidade", "massa_magra", "Apreder_o_basico"], {
+    required_error: "Por favor selecione um objetivo",
+  }),
+  activity_level: z.enum(["beginner", "intermediate", "advanced", "true_beast"], {
+    required_error: "Por favor selecione o nível de atividade",
+  }),
+  status: z.enum(["active", "inactive", "blocked"], {
+    required_error: "Por favor selecione o status",
+  }),
   groups: z.array(z.string()),
 })
 
 export default function RegisterPage() {
-  const router = useRouter()
-  const { addStudent, groups } = useStudents()
-  const [date, setDate] = useState<Date>()
+  const router = useRouter();
+  const [showQrModal, setShowQrModal] = useState(false);
+  const [qrCode, setQrCode] = useState("");
+  const { selectedBranch } = useBranch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       groups: [],
+      status: "active",
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    addStudent({
-      ...values,
-      birthDate: values.birthDate,
-    });
-    router.push('/dashboard/students')
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const new_student = await addStudent(
+      values.username,
+      values.email,
+      values.phonenumber,
+      (selectedBranch?.id as string),
+      values.birthdate,
+      values.gender,
+      values.goal,
+      values.activity_level,
+      ""
+    );
+
+    if (new_student) {
+      // Lógica após a atualização bem-sucedida, como feedback para o usuário
+
+      //TODO: Adicionar logica para imagem de perfil
+      if (new_student.qrcode) {
+        console.log('====================================');
+        console.log(new_student.qrcode);
+        console.log('====================================');
+        setQrCode(new_student.qrcode);
+        setShowQrModal(true);
+      }
+    }
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Cadastrar Novos Alunos</h1>
+    <>
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-2xl font-bold mb-6">Cadastrar Novos Alunos</h1>
 
-      <Card>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nome do aluno" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="email@exemplo.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="registration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Matrícula</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Número de matrícula" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="birthDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Data de Nascimento</FormLabel>
-                    <FormControl>
-                      <input
-                        type="date"
-                        className={cn(
-                          "w-[240px] px-3 py-2 text-left font-normal border rounded-md",
-                          !field.value && "text-muted-foreground"
-                        )}
-                        value={field.value || ""} // Garante que o valor inicial seja vazio, se não houver valor definido
-                        onChange={(e) => field.onChange(e.target.value)}
-                        min="1900-01-01"
-                        max={new Date().toISOString().split("T")[0]} // Limita ao dia atual
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Telefone</FormLabel>
-                    <FormControl>
-                      <Input placeholder="(00) 00000-0000" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+        <Card>
+          <CardContent className="pt-6">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nome</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione um status" />
-                        </SelectTrigger>
+                        <Input placeholder="Nome do aluno" {...field} />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="active">Ativo</SelectItem>
-                        <SelectItem value="inactive">Inativo</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <Button type="submit">Cadastrar</Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="email@exemplo.com" type="email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-    </div>
+                <FormField
+                  control={form.control}
+                  name="birthdate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Data de Nascimento</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          className={cn("w-full", !field.value && "text-muted-foreground")}
+                          {...field}
+                          max={new Date().toISOString().split("T")[0]}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="phonenumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Telefone</FormLabel>
+                      <FormControl>
+                        <Input placeholder="(00) 00000-0000" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gênero</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o gênero" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="M">Masculino</SelectItem>
+                          <SelectItem value="F">Feminino</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="goal"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Objetivo</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o objetivo" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="emagrecer">Emagrecer</SelectItem>
+                          <SelectItem value="hipertrofia">Hipertrofia</SelectItem>
+                          <SelectItem value="secar">Secar</SelectItem>
+                          <SelectItem value="flexibilidade">Flexibilidade</SelectItem>
+                          <SelectItem value="massa_magra">Massa Magra</SelectItem>
+                          <SelectItem value="Apreder_o_basico">Aprender o Básico</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="activity_level"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nível de Atividade</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o nível" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="beginner">Iniciante</SelectItem>
+                          <SelectItem value="intermediate">Intermediário</SelectItem>
+                          <SelectItem value="advanced">Avançado</SelectItem>
+                          <SelectItem value="true_beast">Profissional</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione um status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="active">Ativo</SelectItem>
+                          <SelectItem value="inactive">Inativo</SelectItem>
+                          <SelectItem value="blocked">Bloqueado</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button type="submit" className="w-full">
+                  Cadastrar
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
+      <Dialog open={showQrModal} onOpenChange={setShowQrModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Escanear pelo App</DialogTitle>
+            <DialogDescription>O aluno deve escanear o QRCode para receber acesso ao App.</DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-center items-center">
+            <QRCode value={qrCode} size={400} />
+          </div>
+          <Button
+            onClick={() => {
+              router.push("/dashboard/students")
+            }}
+          >
+            Ir a listagem de Alunos
+          </Button>
+        </DialogContent>
+      </Dialog>
+    </>
+
   )
 }
