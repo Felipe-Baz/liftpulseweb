@@ -23,13 +23,11 @@ const navigation = {
   user_management: [
     { name: 'Todos os Alunos', href: '/dashboard/students', icon: "Users" },
     { name: 'Cadastrar Aluno', href: '/dashboard/students/register', icon: "UserPlus" },
-    { name: 'Consultar Detalhes do Aluno', href: '/dashboard/students/details', icon: "Search" },
     { name: 'Grupos de Alunos', href: '/dashboard/students/groups', icon: "Layers" },
   ],
   instructor_management: [
     { name: 'Todos os Instrutores', href: '/dashboard/instructors', icon: "Users" },
     { name: 'Cadastrar Instrutor', href: '/dashboard/instructors/register', icon: "UserPlus" },
-    { name: 'Consultar Detalhes do Instrutor', href: '/dashboard/instructors/details', icon: "Search" },
     { name: 'Grupos de Instrutores', href: '/dashboard/instructors/groups', icon: "Layers" },
   ],
   marketing: [

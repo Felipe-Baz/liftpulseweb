@@ -19,3 +19,25 @@ export interface StudentGroup {
   description: string
   color: string
 }
+
+export const goalLabels: Record<Student['goal'], string> = {
+  emagrecer: "Emagrecer",
+  hipertrofia: "Hipertrofia",
+  secar: "Secar",
+  flexibilidade: "Flexibilidade",
+  massa_magra: "Massa Magra",
+  Apreder_o_basico: "Aprender o Básico"
+}
+
+export const activityLevelLabels: Record<Student['activity_level'], string> = {
+  beginner: "Iniciante",
+  intermediate: "Intermediário",
+  advanced: "Avançado",
+  true_beast: "True Beast"
+}
+
+export const statusLabels: Record<Student['status'], string> = {
+  active: "Ativo",
+  inactive: "Inativo",
+  blocked: "Bloqueado"
+}
