@@ -33,6 +33,7 @@ export async function addInstructor(
             phonenumber: instructorData.telefone,
             status: instructorData.status,
             birthdate: instructorData.birthdate,
+            password: "",
             groups: []
         };
     } catch (error) {
@@ -76,7 +77,8 @@ export async function getInstructorDetails(instructorId: string): Promise<Instru
             profile_image: instructorData.profile_image,
             status: instructorData.status,
             birthdate: instructorData.birthdate,
-            groups: []
+            groups: [],
+            password: ""
         };
     } catch (error) {
         console.error('Erro ao buscar os detalhes do instrutor:', error);
@@ -116,7 +118,8 @@ export async function updateInstructor(
             profile_image: instructorData.profile_image,
             status: instructorData.status,
             birthdate: instructorData.birthdate,
-            groups: []
+            groups: [],
+            password: ""
         };
     } catch (error) {
         console.error('Erro ao atualizar o instrutor:', error);
