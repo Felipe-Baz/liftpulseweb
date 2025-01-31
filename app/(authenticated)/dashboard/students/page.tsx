@@ -4,7 +4,7 @@ import { UsersTable } from "./student-table"
 import { CreateStudentDialog } from "./create-student-dialog"
 import { CreateGroupDialog } from "./create-group-dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Student } from "@/types/student";
 import { useBranch } from "@/contexts/branch-context";
 import { getStudentsByBranch } from "@/actions/student"
@@ -17,18 +17,19 @@ export default function UsersPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { selectedBranch } = useBranch();
 
-    const loadStudentList = async () => {
+    const loadStudentList = useCallback(async () => {
         setIsLoading(true);
         if (selectedBranch) {
             const data = await getStudentsByBranch(selectedBranch.id as string);
             setStudentList(data);
         }
         setIsLoading(false);
-    };
-
+    }, [selectedBranch]);
+    
     useEffect(() => {
         loadStudentList();
-    }, [selectedBranch]);
+    }, [loadStudentList]);
+    
 
     if (studentList === null || isLoading) {
         return (

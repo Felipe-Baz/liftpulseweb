@@ -9,3 +9,10 @@ export interface Instructor {
   profile_image?: string
   password: string
 }
+
+export interface InstructorGroup {
+  id: string
+  name: string
+  description: string
+  color: string
+}

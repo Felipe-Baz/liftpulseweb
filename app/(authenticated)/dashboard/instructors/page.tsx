@@ -4,7 +4,7 @@ import { InstructorTable } from "./instructor-table"
 import { CreateInstructorDialog } from "./create-instructor-dialog"
 import { CreateGroupDialog } from "./create-group-dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Instructor } from "@/types/instructor";
 import { useBranch } from "@/contexts/branch-context";
 import { getinstructorsByBranch } from "@/actions/instructors"
@@ -17,18 +17,19 @@ export default function UsersPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { selectedBranch } = useBranch();
 
-    const loadinstructorList = async () => {
+    const loadinstructorList = useCallback(async () => {
         setIsLoading(true);
         if (selectedBranch) {
             const data = await getinstructorsByBranch(selectedBranch.id as string);
             setinstructorList(data);
         }
         setIsLoading(false);
-    };
-
+    }, [selectedBranch]);
+    
     useEffect(() => {
         loadinstructorList();
-    }, [selectedBranch]);
+    }, [loadinstructorList]);
+    
     
     if (!selectedBranch || instructorList === null || isLoading) {
         return (
