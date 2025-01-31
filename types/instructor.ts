@@ -1,18 +1,11 @@
 export interface Instructor {
-    id: string
-    name: string
-    email: string
-    registration: string
-    birthDate: string
-    phone: string
-    groups: string[]
-    status: "active" | "inactive"
-  }
-  
-  export interface InstructorGroup {
-    id: string
-    name: string
-    description: string
-    color: string
-  }
-  
+  id: string
+  username: string
+  email: string
+  birthdate: string
+  phonenumber: string
+  groups: string[]
+  status: "active" | "inactive"
+  profile_image?: string
+  password: string
+}

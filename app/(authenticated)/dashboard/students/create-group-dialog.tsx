@@ -37,7 +37,6 @@ export function CreateGroupDialog() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Submit form data
     console.log(values)
     setOpen(false)
     form.reset()
@@ -63,9 +62,9 @@ export function CreateGroupDialog() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <FormControl>
-                    <Input placeholder="IT Department" {...field} />
+                    <Input placeholder="Departamento de TI" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -76,16 +75,16 @@ export function CreateGroupDialog() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Descrição</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Group description..." className="resize-none" {...field} />
+                    <Textarea placeholder="Descrição do grupo..." className="resize-none" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <DialogFooter>
-              <Button type="submit">Save</Button>
+              <Button type="submit">Salvar</Button>
             </DialogFooter>
           </form>
         </Form>
@@ -93,4 +92,3 @@ export function CreateGroupDialog() {
     </Dialog>
   )
 }
-
