@@ -91,7 +91,17 @@ export function CreateInstructorDialog({ branchId }: InstructorDialogProps) {
           <DialogDescription>Adicione um novo instrutor ao sistema. Clique em salvar quando terminar.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit(
+              (values) => {
+                onSubmit(values);
+              },
+              (errors) => {
+                console.log("❌ Erros no formulário:", errors);
+              }
+            )();
+          }} className="space-y-4">
             <FormField
               control={form.control}
               name="name"
