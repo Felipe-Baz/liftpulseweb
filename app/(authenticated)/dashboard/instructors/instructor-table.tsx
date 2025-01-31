@@ -32,19 +32,6 @@ import { Badge } from "@/components/ui/badge";
 import type { Instructor } from "@/types/instructor";
 import { DetailsInstructors } from "./details-instructors";
 
-const data: Instructor[] = [
-  {
-    id: "1",
-    username: "felipe baz",
-    email: "bundinha@gordao.com",
-    status: "active",
-    groups: ["IT", "Management"],
-    birthdate: "30/10/2001",
-    phonenumber: "029237263232",
-    profile_image: ""
-  },
-];
-
 const ActionCell = ({ row }: { row: any }) => {
   const [showDetailsInstructors, setShowDetailsInstructors] = useState(false);
 
@@ -78,7 +65,7 @@ const ActionCell = ({ row }: { row: any }) => {
   );
 };
 
-export const columns: ColumnDef<Instructor>[] = [
+const columns: ColumnDef<Instructor>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -134,14 +121,18 @@ export const columns: ColumnDef<Instructor>[] = [
   },
 ];
 
-export function InstructorTable() {
+interface InstructorTableProps {
+  data: Instructor[];
+}
+
+export function InstructorTable({ data }: InstructorTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const table = useReactTable({
     data,
-    columns,
+    columns, // Agora usando as colunas definidas internamente
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -160,7 +151,7 @@ export function InstructorTable() {
     <div className="w-full">
       <div className="flex items-center gap-4 py-4">
         <Input
-          placeholder="Filter by name..."
+          placeholder="Filtrar por nome..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
           className="max-w-sm"
@@ -226,8 +217,8 @@ export function InstructorTable() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
+          {table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length} linha(s)
+          selecionada(s).
         </div>
         <div className="space-x-2">
           <Button

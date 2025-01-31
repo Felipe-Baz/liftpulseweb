@@ -19,15 +19,30 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { addinstructor } from "@/actions/instructors"
 
 const formSchema = z.object({
-  name: z.string().min(2).max(50),
-  email: z.string().email(),
+  name: z.string().min(2, {
+    message: "Nome deve ter pelo menos 2 caracteres",
+  }).max(50),
+  email: z.string().email({
+    message: "Email inválido",
+  }),
   role: z.string(),
   status: z.enum(["ativo", "inativo"]),
-})
+  birthdate: z.string(),
+  phonenumber: z.string(),
+  groups: z.array(z.string()),
+  profile_image: z.string(),
+  password: z.string(),
+});
 
-export function CreateInstructorDialog() {
+
+interface InstructorDialogProps {
+  branchId: string;
+}
+
+export function CreateInstructorDialog({ branchId }: InstructorDialogProps) {
   const [open, setOpen] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,16 +50,31 @@ export function CreateInstructorDialog() {
     defaultValues: {
       name: "",
       email: "",
-      role: "user",
+      birthdate: "",
+      phonenumber: "",
+      groups: [],
       status: "ativo",
+      profile_image: ""
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Submeter os dados do formulário
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setOpen(false)
     form.reset()
+
+    try {
+      const new_instructor = await addinstructor(
+        values.name,
+        values.email,
+        values.phonenumber,
+        branchId,
+        values.birthdate,
+        values.password,
+        values.profile_image
+      );
+    } catch (error) {
+      console.error("Erro ao criar instrutor:", error);
+    }
   }
 
   return (
