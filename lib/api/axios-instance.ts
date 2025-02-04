@@ -70,6 +70,9 @@ api.interceptors.response.use(
 
                 return api(originalRequest)
             } catch (refreshError) {
+                console.log('====================================');
+                console.log(refreshError);
+                console.log('====================================');
                 // Se falhar o refresh, redireciona para login
                 window.location.href = '/login'
                 return Promise.reject(refreshError)

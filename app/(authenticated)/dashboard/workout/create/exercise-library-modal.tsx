@@ -6,22 +6,18 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-
-interface Exercise {
-  id: string
-  name: string
-}
+import { Exercise, ExerciseType } from '@/types/exercise'
 
 // This would typically come from an API
 const SAMPLE_EXERCISES: Exercise[] = [
-  { id: '1', name: 'Bench Press' },
-  { id: '2', name: 'Squat' },
-  { id: '3', name: 'Deadlift' },
-  { id: '4', name: 'Pull-ups' },
-  { id: '5', name: 'Push-ups' },
-  { id: '6', name: 'Shoulder Press' },
-  { id: '7', name: 'Barbell Row' },
-  { id: '8', name: 'Leg Press' },
+  { id: '1', name: 'Bench Press', exerciseType: ExerciseType.PESO_REPETICAO, series: [] },
+  { id: '2', name: 'Squat', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
+  { id: '3', name: 'Deadlift', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
+  { id: '4', name: 'Pull-ups', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
+  { id: '5', name: 'Push-ups', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
+  { id: '6', name: 'Shoulder Press', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
+  { id: '7', name: 'Barbell Row', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
+  { id: '8', name: 'Leg Press', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
 ]
 
 interface ExerciseLibraryModalProps {
