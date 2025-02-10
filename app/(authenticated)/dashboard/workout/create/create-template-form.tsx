@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import ExerciseLibraryModal from './exercise-library-modal'
 import { useRouter } from 'next/navigation'
 import { Exercise, ExerciseType, FormErrors } from '@/types/exercise'
-import DynamicCard from '@/components/Custom-Create-Exercise'
+import ExerciseRow from '@/components/ExerciseRow'
 
 export default function CreateTemplateForm() {
     const router = useRouter()
@@ -18,30 +18,36 @@ export default function CreateTemplateForm() {
     const [errors, setErrors] = useState<FormErrors>({})
     const [isLibraryOpen, setIsLibraryOpen] = useState(false)
 
-    const handleExercisesSelected = (selectedExercises: {
-        id: string
-        name: string
-        exerciseType: ExerciseType
-    }[]) => {
-        setExercises(prev => [
-            ...prev,
-            ...selectedExercises.map(exercise => ({
-                id: crypto.randomUUID(),
-                name: exercise.name,
-                exerciseType: exercise.exerciseType,
-                series: []
+    // Ao selecionar exercícios na biblioteca, removemos os exercícios que vieram da biblioteca anteriormente
+    // e adicionamos a nova seleção, marcando-os com fromLibrary: true.
+    const handleExercisesSelected = useCallback((selectedExercises: Exercise[]) => {
+        setExercises(prev => {
+            const nonLibraryExercises = prev.filter(e => !e.fromLibrary)
+            const libraryExercises = selectedExercises.map(ex => ({
+                ...ex,
+                fromLibrary: true
             }))
-        ])
-    }
+            return [...nonLibraryExercises, ...libraryExercises]
+        })
+    }, []);
 
     const addExercise = () => {
         setExercises([
             ...exercises,
             {
                 id: crypto.randomUUID(),
-                name: '',
-                exerciseType: ExerciseType.PESO_REPETICAO,
-                series: []
+                title: '',
+                type: ExerciseType.PESO_REPETICAO,
+                description: '',
+                primary_muscle: '',
+                secondary_muscle: '',
+                equipment: '',
+                image_video: '',
+                is_public: true,
+                created_at: '',
+                updated_at: '',
+                series: [],
+                fromLibrary: false // Exercício adicionado manualmente
             },
         ])
     }
@@ -50,13 +56,13 @@ export default function CreateTemplateForm() {
         setExercises(exercises.filter(exercise => exercise.id !== id))
     }
 
-    const updateExercise = (id: string, field: keyof Exercise, value: any) => {
-        setExercises(
-            exercises.map(exercise =>
+    const updateExercise = useCallback((id: string, field: keyof Exercise, value: any) => {
+        setExercises(prev =>
+            prev.map(exercise =>
                 exercise.id === id ? { ...exercise, [field]: value } : exercise
             )
-        )
-    }
+        );
+    }, []);
 
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {}
@@ -70,9 +76,10 @@ export default function CreateTemplateForm() {
         } else {
             const hasInvalidExercise = exercises.some(
                 exercise =>
-                    !exercise.name.trim() ||
-                    exercise.series.length === 0
+                    !exercise.title.trim() ||
+                    !exercise.series || exercise.series.length === 0
             )
+
 
             if (hasInvalidExercise) {
                 newErrors.exercises = 'All exercises must have a name and at least one series'
@@ -91,6 +98,16 @@ export default function CreateTemplateForm() {
                 templateName,
                 exercises,
             })
+        }
+    }
+
+    const handleSave = () => {
+        
+        if (validateForm()) {
+            console.log({
+                templateName,
+                exercises,
+            })
 
             router.refresh()
             router.push("/dashboard/workout/library")
@@ -98,7 +115,7 @@ export default function CreateTemplateForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-8 mb-10">
             <div className="space-y-2">
                 <Label htmlFor="templateName">Template Name</Label>
                 <Input
@@ -120,12 +137,9 @@ export default function CreateTemplateForm() {
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold">Exercises</h2>
                     <div className="flex gap-2">
-                        <Button type="button" onClick={addExercise} variant="outline">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Add Exercise
-                        </Button>
                         <Button type="button" onClick={() => setIsLibraryOpen(true)} variant="outline">
-                            From Library
+                            <Plus className="mr-2 h-4 w-4" />
+                            Adicionar Exercicio
                         </Button>
                     </div>
                 </div>
@@ -139,39 +153,18 @@ export default function CreateTemplateForm() {
 
                 <div className="space-y-4">
                     {exercises.map((exercise) => (
-                        <div key={exercise.id} className="space-y-4">
-                            <div className="flex gap-4">
-                                <Input
-                                    value={exercise.name}
-                                    onChange={(e) =>
-                                        updateExercise(exercise.id, 'name', e.target.value)
-                                    }
-                                    placeholder="Exercise Name"
-                                    className="max-w-md"
-                                />
-                                <Button
-                                    type="button"
-                                    variant="destructive"
-                                    onClick={() => removeExercise(exercise.id)}
-                                >
-                                    Remove Exercise
-                                </Button>
-                            </div>
-                            <DynamicCard
-                                title={exercise.name || "New Exercise"}
-                                description="Configure your series"
-                                exerciseType={exercise.exerciseType}
-                                onSeriesChange={(series: any) =>
-                                    updateExercise(exercise.id, 'series', series)
-                                }
-                            />
-                        </div>
+                        <ExerciseRow
+                            key={exercise.id}
+                            exercise={exercise}
+                            updateExercise={updateExercise}
+                            removeExercise={removeExercise}
+                        />
                     ))}
                 </div>
             </div>
 
             <div className="flex gap-4">
-                <Button type="submit">Save Template</Button>
+                <Button type="button" onClick={handleSave}>Save Template</Button>
                 <Button
                     type="button"
                     variant="outline"
@@ -195,6 +188,7 @@ export default function CreateTemplateForm() {
                 open={isLibraryOpen}
                 onOpenChange={setIsLibraryOpen}
                 onExercisesSelected={handleExercisesSelected}
+                initialSelected={exercises.filter(ex => ex.fromLibrary).map(ex => ex.id)}
             />
         </form>
     )

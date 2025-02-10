@@ -1,36 +1,39 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
-import { defineColumns, ExerciseType } from "@/types/exercise"
+import { defineColumns, Exercise, ExerciseType } from "@/types/exercise"
 import { TimeInput } from "./time-input"
 import { ExerciseTypeDialog, contentMap } from "./exercise-type-dialog"
 
 interface DynamicCardProps {
+    exercise: Exercise;
     title?: string
     description?: string
     imageUrl?: string
     exerciseType: ExerciseType
     onSeriesChange?: (series: Record<string, string>[]) => void
+    removeExercise: (id: string) => void;
 }
 
 export default function DynamicCard({
+    exercise,
     title = "Card Title",
     description = "Card Description",
     imageUrl = "/placeholder.svg?height=64&width=64",
     exerciseType,
     onSeriesChange,
+    removeExercise
 }: DynamicCardProps) {
     const columns = defineColumns(exerciseType).map((label: any, index: any) => ({
         key: label.toLowerCase().replace(/\s/g, "_").replace(/[()]/g, ""),
         label,
     }))
     const [rows, setRows] = useState<Record<string, string>[]>([])
-    const memoizedRows = useMemo(() => rows, [rows]);
     const [dialogOpen, setDialogOpen] = useState(false)
     const [activeRowIndex, setActiveRowIndex] = useState<number | null>(null)
 
@@ -134,21 +137,49 @@ export default function DynamicCard({
     }
 
     useEffect(() => {
-        onSeriesChange?.(memoizedRows);
-    }, [memoizedRows, onSeriesChange]);
-
+        if (onSeriesChange) {
+            onSeriesChange(rows)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [rows])
 
     return (
         <Card className="w-full max-w-4xl">
-            <CardHeader className="flex flex-row items-center gap-4">
-                <Avatar className="h-16 w-16">
-                    <AvatarImage src={imageUrl} alt={title} />
-                    <AvatarFallback>IMG</AvatarFallback>
-                </Avatar>
-                <div className="space-y-1">
-                    <h3 className="text-2xl font-semibold leading-none tracking-tight">{title}</h3>
-                    <p className="text-sm text-muted-foreground">{description}</p>
+            <CardHeader className="flex flex-row items-center justify-between gap-4">
+                <div className="flex flex-row items-center gap-4">
+                    <Avatar className="h-16 w-16">
+                        <AvatarImage src={imageUrl} alt={title} />
+                        <AvatarFallback>IMG</AvatarFallback>
+                    </Avatar>
+                    {exercise.fromLibrary ? (
+                        <div className="space-y-1">
+                            <h3 className="text-2xl font-semibold leading-none tracking-tight">{title}</h3>
+                            <p className="text-sm text-muted-foreground">{description}</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-1">
+                            <Input
+                                type="text"
+                                value={title}
+                                onChange={(e) => {/* lógica para atualizar o título */ }}
+                                className="text-2xl font-semibold leading-none tracking-tight"
+                            />
+                            <Input
+                                type="text"
+                                value={description}
+                                onChange={(e) => {/* lógica para atualizar o título */ }}
+                                className="text-sm text-muted-foreground leading-none tracking-tight"
+                            />
+                        </div>
+                    )}
                 </div>
+                <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => removeExercise(exercise.id)}
+                >
+                    Remover Exercicio
+                </Button>
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">

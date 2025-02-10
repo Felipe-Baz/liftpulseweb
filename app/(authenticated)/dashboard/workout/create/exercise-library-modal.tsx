@@ -1,45 +1,50 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import { Exercise, ExerciseType } from '@/types/exercise'
-
-// This would typically come from an API
-const SAMPLE_EXERCISES: Exercise[] = [
-  { id: '1', name: 'Bench Press', exerciseType: ExerciseType.PESO_REPETICAO, series: [] },
-  { id: '2', name: 'Squat', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
-  { id: '3', name: 'Deadlift', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
-  { id: '4', name: 'Pull-ups', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
-  { id: '5', name: 'Push-ups', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
-  { id: '6', name: 'Shoulder Press', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
-  { id: '7', name: 'Barbell Row', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
-  { id: '8', name: 'Leg Press', exerciseType: ExerciseType.PESO_REPETICAO, series: []  },
-]
+import { Exercise } from '@/types/exercise'
+import { fetchExercises } from '@/actions/exercises'
 
 interface ExerciseLibraryModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onExercisesSelected: (exercises: Exercise[]) => void
+  initialSelected?: string[]
 }
 
 export default function ExerciseLibraryModal({
   open,
   onOpenChange,
   onExercisesSelected,
+  initialSelected = []
 }: ExerciseLibraryModalProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedExercises, setSelectedExercises] = useState<string[]>([])
+  const [exercises, setExercises] = useState<Exercise[]>([])
 
-  const filteredExercises = SAMPLE_EXERCISES.filter(exercise =>
-    exercise.name.toLowerCase().includes(searchTerm.toLowerCase())
+  useEffect(() => {
+    if (open) {
+      const loadExercises = async () => {
+        const fetchedExercises = await fetchExercises();
+        setExercises(fetchedExercises);
+      };
+
+      loadExercises();
+      // Ao abrir o modal, define os exercícios já selecionados conforme a prop initialSelected
+      setSelectedExercises(initialSelected);
+    }
+  }, [open, initialSelected]);
+
+  const filteredExercises = exercises.filter(exercise =>
+    exercise.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const handleSubmit = () => {
-    const selected = SAMPLE_EXERCISES.filter(ex => selectedExercises.includes(ex.id))
+    const selected = exercises.filter(ex => selectedExercises.includes(ex.id))
     onExercisesSelected(selected)
     setSelectedExercises([])
     onOpenChange(false)
@@ -84,7 +89,7 @@ export default function ExerciseLibraryModal({
                 htmlFor={`modal-${exercise.id}`}
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                {exercise.name}
+                {exercise.title}
               </label>
             </div>
           ))}

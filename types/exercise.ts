@@ -1,3 +1,5 @@
+import { list } from "postcss";
+
 export enum ExerciseType {
     PESO_REPETICAO = "peso_repeticao",
     REPETICAO_PESO_CORPORAL = "repeticao_peso_corporal",
@@ -32,11 +34,46 @@ export const defineColumns = (exerciseType: ExerciseType) => {
     }
 }
 
-export interface Exercise {
+export interface ExerciseDTO {
     id: string
     name: string
     exerciseType: ExerciseType
     series: Record<string, string>[] // This will store the dynamic rows from DynamicCard
+}
+
+export interface Exercise {
+    id: string;
+    title: string;
+    description: string;
+    primary_muscle: string;
+    secondary_muscle: string;
+    equipment: string;
+    type: ExerciseType;
+    image_video: string | null;
+    is_public: boolean;
+    created_at: string;
+    updated_at: string;
+    series: Record<string, string>[];
+    fromLibrary?: boolean; // Indica se o exercício foi adicionado via biblioteca
+}
+
+function normalizeExercise(data: Partial<Exercise>): Exercise {
+    return {
+        id: data.id || '',
+        title: data.title || '',
+        description: data.description || '',
+        primary_muscle: data.primary_muscle || '',
+        secondary_muscle: data.secondary_muscle || '',
+        equipment: data.equipment || '',
+        type: data.type!, // Aqui assumindo que você garante um valor válido para type
+        image_video: data.image_video || null,
+        is_public: data.is_public || false,
+        created_at: data.created_at || new Date().toISOString(),
+        updated_at: data.updated_at || new Date().toISOString(),
+        // Se data.series for null ou undefined, o operador nullish coalescing (??) garante um array vazio
+        series: data.series ?? [],
+        fromLibrary: data.fromLibrary,
+    };
 }
 
 export interface FormErrors {
