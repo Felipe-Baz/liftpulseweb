@@ -1,3 +1,5 @@
+import { Exercise } from "./exercise";
+
 export interface Series {
     type: "AQUECIMENTO" | "TREINO"; // Exemplo de tipos possíveis
     last: string;
@@ -25,6 +27,21 @@ export interface Workout {
     image_video: string;
     is_public: boolean;
     exercise_list: ExerciseList[];
+    created_at: string;
+    updated_at: string;
+}
+
+export interface WorkoutDetails {
+    id: string;
+    title: string;
+    description: string;
+    duration: number;
+    calories: number;
+    distance: number;
+    volume: number;
+    image_video: string;
+    is_public: boolean;
+    exercises: Exercise[];
     created_at: string;
     updated_at: string;
 }

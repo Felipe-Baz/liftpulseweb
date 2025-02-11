@@ -12,28 +12,28 @@ interface ExerciseTypeOption {
 }
 
 export const contentMap: Record<string, ExerciseTypeOption> = {
-    Aquecimento: {
+    AQUECIMENTO: {
         icon: <Heart className="h-5 w-5" />,
         title: "Aquecimento",
         subtitle: "Séries leves para aumentar a circulação e evitar lesões.",
         backgroundColor: "bg-orange-100",
         textColor: "text-orange-500",
     },
-    Drop: {
+    DROP: {
         icon: <Flame className="h-5 w-5" />,
         title: "Drop",
         subtitle: "Reduza o peso gradualmente durante a série.",
         backgroundColor: "bg-blue-100",
         textColor: "text-blue-500",
     },
-    Falhada: {
+    FALHADA: {
         icon: <Activity className="h-5 w-5" />,
         title: "Falhada",
         subtitle: "Empurre seus limites até não conseguir mais.",
         backgroundColor: "bg-red-100",
         textColor: "text-red-500",
     },
-    Normal: {
+    NORMAL: {
         icon: <Dumbbell className="h-5 w-5" />,
         title: "Normal",
         subtitle: "O formato clássico de séries.",

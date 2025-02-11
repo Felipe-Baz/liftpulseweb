@@ -26,3 +26,42 @@ export function transformTableDataToSeries(tableData) {
 
     return series;
 }
+
+
+export function transformSeriesToTableData(series) {
+    // Verifica se a entrada é válida
+    if (!Array.isArray(series)) {
+        throw new Error("Dados inválidos: a entrada deve ser um array de objetos de série.");
+    }
+
+    // Define as colunas do tableData
+    var columns = [
+        "Tipo",
+    ];
+
+    
+
+    // Converte os objetos de série para as linhas do tableData
+    const rows = series.map(item => {
+        const dictValueColumns = {};
+
+        dictValueColumns["tipo"] = item.type || "Normal"; // Adiciona tipo com padrão "Normal"
+
+        if (item.weight) {
+            dictValueColumns["peso_(kg)"] = String(item.weight);
+        }
+
+        if (item.repetitions) {
+            dictValueColumns["repetições"] = String(item.repetitions);
+        }
+
+        return dictValueColumns
+    });
+
+    var tableResponse = {
+        columns,
+        rows
+    };
+
+    return rows ;
+}

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { defineColumns, Exercise, ExerciseType } from "@/types/exercise"
 import { TimeInput } from "./time-input"
 import { ExerciseTypeDialog, contentMap } from "./exercise-type-dialog"
+import { transformSeriesToTableData } from "@/utils/transformers"
 
 interface DynamicCardProps {
     exercise: Exercise;
@@ -33,7 +34,7 @@ export default function DynamicCard({
         key: label.toLowerCase().replace(/\s/g, "_").replace(/[()]/g, ""),
         label,
     }))
-    
+
     const [rows, setRows] = useState<Record<string, string>[]>([])
     const [dialogOpen, setDialogOpen] = useState(false)
     const [activeRowIndex, setActiveRowIndex] = useState<number | null>(null)
@@ -108,7 +109,7 @@ export default function DynamicCard({
             )
         }
 
-        if (column.key.includes("repeticoes") || column.key.includes("peso") || column.key.includes("distancia")) {
+        if (column.key.includes("repetições") || column.key.includes("peso_(kg)") || column.key.includes("distancia")) {
             return (
                 <Input
                     type="number"
@@ -122,20 +123,34 @@ export default function DynamicCard({
                     }}
                     className="h-8"
                     min={0}
-                    step={column.key.includes("peso") ? 0.5 : 1}
+                    step={column.key.includes("peso_(kg)") ? 0.5 : 1}
                 />
             )
+        }
+
+        var key = ""
+        if (column.key == 'peso_kg') {
+            key = 'peso_(kg)'
+        } else {
+
         }
 
         return (
             <Input
                 type="text"
-                value={row[column.key]}
+                value={row[key]}
                 onChange={(e) => updateCell(rowIndex, column.key, e.target.value)}
                 className="h-8"
             />
         )
     }
+
+    useEffect(() => {
+        const newRow: any = transformSeriesToTableData(exercise.series) ;
+
+        setRows(newRow)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     useEffect(() => {
         if (onSeriesChange) {

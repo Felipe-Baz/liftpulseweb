@@ -1,7 +1,7 @@
 "use server"
 
 import api from "@/lib/api/axios-instance";
-import { Workout, WorkoutResponse } from "@/types/workout";
+import { Workout, WorkoutDetails, WorkoutResponse } from "@/types/workout";
 
 export async function fetchWorkouts(): Promise<WorkoutResponse  | null> {
     try {
@@ -19,6 +19,16 @@ export async function createWorkout(workoutData: Omit<Workout, 'id' | 'created_a
         return response.data;
     } catch (error) {
         console.error('Erro ao criar treino:', error);
+        return null;
+    }
+}
+
+export async function fetchWorkoutById(workoutId: string): Promise<WorkoutDetails | null> {
+    try {
+        const response = await api.get(`/api/v1/workout/${workoutId}`);
+        return response.data.workout;
+    } catch (error) {
+        console.error(`Erro ao buscar treino com ID ${workoutId}:`, error);
         return null;
     }
 }

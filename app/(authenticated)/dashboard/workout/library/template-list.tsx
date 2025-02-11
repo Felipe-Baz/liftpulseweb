@@ -79,7 +79,7 @@ export default function TemplateList() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                  <Link href={`/templates/${template.workout_id}/edit`}>
+                  <Link href={`/dashboard/workout/${template.workout_id}/edit`}>
                     <Pencil className="mr-2 h-4 w-4" />
                     Editar
                   </Link>
