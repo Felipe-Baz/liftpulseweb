@@ -29,6 +29,10 @@ export function transformTableDataToSeries(tableData) {
 
 
 export function transformSeriesToTableData(series) {
+
+    if (series == undefined) {
+        return []
+    }
     // Verifica se a entrada é válida
     if (!Array.isArray(series)) {
         throw new Error("Dados inválidos: a entrada deve ser um array de objetos de série.");
@@ -39,19 +43,21 @@ export function transformSeriesToTableData(series) {
         "Tipo",
     ];
 
-    
-
     // Converte os objetos de série para as linhas do tableData
     const rows = series.map(item => {
         const dictValueColumns = {};
 
-        dictValueColumns["tipo"] = item.type || "Normal"; // Adiciona tipo com padrão "Normal"
+        dictValueColumns["tipo"] = item.type || "NORMAL"; // Adiciona tipo com padrão "Normal"
 
-        if (item.weight) {
+        if (item.peso_kg) {
+            dictValueColumns["peso_(kg)"] = String(item.peso_kg);
+        } else if (item.weight) {
             dictValueColumns["peso_(kg)"] = String(item.weight);
         }
 
-        if (item.repetitions) {
+        if (item.repetições) {
+            dictValueColumns["repetições"] = String(item.repetições);
+        } else if (item.repetitions) {
             dictValueColumns["repetições"] = String(item.repetitions);
         }
 

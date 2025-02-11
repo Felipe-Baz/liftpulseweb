@@ -22,11 +22,14 @@ export default function CreateTemplateForm() {
     useEffect(() => {
         // Verifica se há exercícios selecionados na sessionStorage
         const storedExercises = sessionStorage.getItem('selectedExercises');
+        const storedTitle = sessionStorage.getItem('storedTitle') || "";
 
         if (storedExercises) {
             const exercisesFromLibrary = JSON.parse(storedExercises);
+            setTemplateName(storedTitle);
             setExercises(exercisesFromLibrary);
             sessionStorage.removeItem('selectedExercises'); // Limpa os dados após carregar
+            sessionStorage.removeItem('storedTitle');
         }
     }, []);
 
@@ -121,7 +124,10 @@ export default function CreateTemplateForm() {
 
     const navigateToExerciseLibrary = () => {
         // Armazenar os exercícios selecionados na sessionStorage antes de navegar
-        sessionStorage.setItem('selectedExercises', JSON.stringify(exercises));
+        var exercise_json = JSON.stringify(exercises);
+
+        sessionStorage.setItem('storedTitle', templateName);
+        sessionStorage.setItem('selectedExercises', exercise_json);
         router.push('/dashboard/exercise/search?fromCreateTemplate=true');
     };
 

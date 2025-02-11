@@ -12,7 +12,8 @@ import CreateExerciseModal from '@/components/CreateExerciseModal';
 
 export default function ExerciseLibraryPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
+  const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([]);
+  const [selectedExercisesId, setSelectedExercisesId] = useState<string[]>([]);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const router = useRouter();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -22,7 +23,9 @@ export default function ExerciseLibraryPage() {
 
     if (storedExercises) {
       const exercisesFromLibrary = JSON.parse(storedExercises);
+
       setSelectedExercises(exercisesFromLibrary);
+      setSelectedExercisesId(exercisesFromLibrary);
     }
 
     const loadExercises = async () => {
@@ -33,7 +36,8 @@ export default function ExerciseLibraryPage() {
       const storedExercises = sessionStorage.getItem('selectedExercises');
       if (storedExercises) {
         const selectedExercisesFromLibrary = JSON.parse(storedExercises);
-        setSelectedExercises(selectedExercisesFromLibrary.map((ex: Exercise) => ex.id));
+        setSelectedExercises(selectedExercisesFromLibrary);
+        setSelectedExercisesId(selectedExercisesFromLibrary.map((ex: Exercise) => ex.id));
       }
     };
 
@@ -45,11 +49,10 @@ export default function ExerciseLibraryPage() {
   );
 
   const handleSubmit = () => {
-    const selected = exercises.filter((ex) => selectedExercises.includes(ex.id));
-
-    setSelectedExercises([]);
     sessionStorage.removeItem('selectedExercises');
-    sessionStorage.setItem('selectedExercises', JSON.stringify(selected));
+    sessionStorage.setItem('selectedExercises', JSON.stringify(selectedExercises));
+    setSelectedExercises([]);
+    setSelectedExercisesId([]);
     router.back();
   };
 
@@ -76,12 +79,17 @@ export default function ExerciseLibraryPage() {
           >
             <Checkbox
               id={`exercise-${exercise.id}`}
-              checked={selectedExercises.includes(exercise.id)}
+              checked={selectedExercisesId.includes(exercise.id)}
               onCheckedChange={(checked) => {
-                setSelectedExercises((prevSelected) =>
+                setSelectedExercisesId((prevSelected) =>
                   checked
                     ? [...prevSelected, exercise.id]
                     : prevSelected.filter((id) => id !== exercise.id)
+                );
+                setSelectedExercises((prevSelected) =>
+                  checked
+                    ? [...prevSelected, exercise]
+                    : prevSelected.filter((ex) => ex.id !== exercise.id)
                 );
               }}
             />

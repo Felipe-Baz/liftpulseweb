@@ -9,8 +9,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useRouter, usePathname } from 'next/navigation'
 import { Exercise, FormErrors } from '@/types/exercise'
 import ExerciseRow from '@/components/ExerciseRow'
-import { ExerciseList, Workout, WorkoutDetails } from '@/types/workout'
-import { createWorkout, fetchWorkoutById } from '@/actions/workout'
+import { ExerciseList, Workout, WorkoutDetails, WorkoutDto } from '@/types/workout'
+import { createWorkout, fetchWorkoutById, updateWorkout } from '@/actions/workout'
 import { transformTableDataToSeries } from '@/utils/transformers'
 
 export default function EditWorkoutForm() {
@@ -46,6 +46,15 @@ export default function EditWorkoutForm() {
                         fromLibrary: true
                     }))
                     setExercises(exercisesFromApi)
+                }
+
+                const storedExercises = sessionStorage.getItem('selectedExercises');
+                const storedTitle = sessionStorage.getItem('storedTitle') || "";
+
+                if (storedExercises && storedTitle) {
+                    const exercisesFromLibrary = JSON.parse(storedExercises);
+                    setTemplateName(storedTitle);
+                    setExercises(exercisesFromLibrary);
                 }
             }
             loadWorkout()
@@ -103,8 +112,8 @@ export default function EditWorkoutForm() {
     const handleSave = async () => {
         if (validateForm()) {
             // Converta os dados da tela para o formato esperado pela API
-            const workoutToSave: Workout = {
-                id: workoutData?.id ?? '',
+            const workoutToSave: WorkoutDto = {
+                workout_id: workoutData?.id ?? '',
                 created_at: workoutData?.created_at ?? '',
                 updated_at: workoutData?.updated_at ?? '',
 
@@ -127,7 +136,7 @@ export default function EditWorkoutForm() {
                 }),
             };
 
-            const savedWorkout = await createWorkout(workoutToSave)
+            const savedWorkout = await updateWorkout(workoutId, workoutToSave)
 
             if (savedWorkout) {
                 console.log('Treino salvo com sucesso:', savedWorkout)
@@ -141,6 +150,7 @@ export default function EditWorkoutForm() {
 
     const navigateToExerciseLibrary = () => {
         sessionStorage.setItem('selectedExercises', JSON.stringify(exercises))
+        sessionStorage.setItem('storedTitle', templateName);
         router.push('/dashboard/exercise/search?fromCreateTemplate=true')
     }
 
@@ -149,7 +159,7 @@ export default function EditWorkoutForm() {
     return (
         <form onSubmit={handleSubmit} className="space-y-8 mb-10">
             <div className="space-y-2">
-                <Label htmlFor="templateName">Template Name</Label>
+                <Label htmlFor="templateName">Nome do Treino</Label>
                 <Input
                     id="templateName"
                     value={templateName}
@@ -196,13 +206,13 @@ export default function EditWorkoutForm() {
             </div>
 
             <div className="flex gap-4">
-                <Button type="button" onClick={handleSave}>Save Template</Button>
+                <Button type="button" onClick={handleSave}>Editar Treino</Button>
                 <Button
                     type="button"
                     variant="outline"
                     onClick={() => router.back()}
                 >
-                    Cancel
+                    Cancelar
                 </Button>
             </div>
 
@@ -213,7 +223,6 @@ export default function EditWorkoutForm() {
                 size="icon"
             >
                 <Plus className="h-6 w-6" />
-                <span className="sr-only">Add from exercise library</span>
             </Button>
         </form>
     )

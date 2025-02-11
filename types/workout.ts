@@ -1,7 +1,7 @@
 import { Exercise } from "./exercise";
 
 export interface Series {
-    type: "AQUECIMENTO" | "TREINO"; // Exemplo de tipos possíveis
+    type: "AQUECIMENTO" | "TREINO" | "FALHADA" | "DROP";
     last: string;
     weight: number;
     repetitions: number;

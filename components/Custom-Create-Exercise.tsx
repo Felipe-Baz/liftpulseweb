@@ -45,7 +45,7 @@ export default function DynamicCard({
         const newRow = columns.reduce(
             (acc: any, column: any) => {
                 if (column.key === "tipo") {
-                    acc[column.key] = "Normal"
+                    acc[column.key] = "NORMAL"
                 } else if (column.key.includes("duracao")) {
                     acc[column.key] = "0" // Store duration in seconds
                 } else {
@@ -91,10 +91,10 @@ export default function DynamicCard({
                         setActiveRowIndex(rowIndex)
                         setDialogOpen(true)
                     }}
-                    className={`p-2 rounded-full transition-colors ${contentMap[row[column.key] || "Normal"].backgroundColor
-                        } ${contentMap[row[column.key] || "Normal"].textColor}`}
+                    className={`p-2 rounded-full transition-colors ${contentMap[row[column.key] || "NORMAL"].backgroundColor
+                        } ${contentMap[row[column.key] || "NORMAL"].textColor}`}
                 >
-                    {contentMap[row[column.key] || "Normal"].icon}
+                    {contentMap[row[column.key] || "NORMAL"].icon}
                 </button>
             )
         }

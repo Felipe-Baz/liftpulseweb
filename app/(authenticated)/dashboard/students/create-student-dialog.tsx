@@ -80,9 +80,7 @@ export function CreateStudentDialog({ branchId }: StudentDialogFormProps) {
 
         //TODO: Adicionar logica para imagem de perfil
         if (new_student.qrcode) {
-          console.log('====================================');
           console.log(new_student.qrcode);
-          console.log('====================================');
           setQrCode(new_student.qrcode);
           setShowQrModal(true);
         }
