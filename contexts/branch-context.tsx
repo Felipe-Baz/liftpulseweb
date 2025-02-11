@@ -44,9 +44,6 @@ export function BranchProvider({
       setSelectedBranch(storedBranch)
       setIsLoading(false)
     } else {
-      console.log('====================================');
-      console.log(storedBranches);
-      console.log('====================================');
       const loadBranches = async () => {
         try {
           const data = await fetchBranches()

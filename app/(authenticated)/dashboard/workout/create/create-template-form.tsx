@@ -80,10 +80,6 @@ export default function CreateTemplateForm() {
     }
 
     const handleSave = async () => {
-        console.log('====================================');
-        console.log(exercises);
-        console.log('====================================');
-
         if (validateForm()) {
             // Converta os dados da tela para o formato esperado pela API
             const workoutData: Workout = {
@@ -110,10 +106,6 @@ export default function CreateTemplateForm() {
                     return exerciseList;
                 }),
             };
-
-            console.log('workoutData ====================================');
-            console.log(workoutData);
-            console.log('====================================');
 
             const savedWorkout = await createWorkout(workoutData);
 

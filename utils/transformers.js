@@ -1,13 +1,7 @@
 export function transformTableDataToSeries(tableData) {
-    console.log('tableData ====================================');
-    console.log(tableData);
-    console.log('====================================');
 
     // Converte as linhas para objetos de série
     const series = tableData?.map(row => {
-        console.log('row ====================================');
-        console.log(row);
-        console.log('====================================');
 
         // Verifica se a chave 'peso_(kg)' existe no objeto row
         const hasPesoKg = row.hasOwnProperty("peso_(kg)");
@@ -19,10 +13,6 @@ export function transformTableDataToSeries(tableData) {
             time: row["duração_(segundos)"],
             distance: row["distância_(m)"],
         };
-
-        console.log('columnValues ====================================');
-        console.log(columnValues);
-        console.log('====================================');
 
         return {
             type: columnValues['type'].toUpperCase() || "NORMAL", // Padrão NORMAL
