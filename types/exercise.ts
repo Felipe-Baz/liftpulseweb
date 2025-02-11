@@ -48,7 +48,7 @@ export interface Exercise {
     primary_muscle: string;
     secondary_muscle: string;
     equipment: string;
-    type: ExerciseType;
+    type: string;
     image_video: string | null;
     is_public: boolean;
     created_at: string;

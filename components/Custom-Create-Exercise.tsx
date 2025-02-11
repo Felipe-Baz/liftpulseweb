@@ -33,6 +33,7 @@ export default function DynamicCard({
         key: label.toLowerCase().replace(/\s/g, "_").replace(/[()]/g, ""),
         label,
     }))
+    
     const [rows, setRows] = useState<Record<string, string>[]>([])
     const [dialogOpen, setDialogOpen] = useState(false)
     const [activeRowIndex, setActiveRowIndex] = useState<number | null>(null)
@@ -151,27 +152,11 @@ export default function DynamicCard({
                         <AvatarImage src={imageUrl} alt={title} />
                         <AvatarFallback>IMG</AvatarFallback>
                     </Avatar>
-                    {exercise.fromLibrary ? (
-                        <div className="space-y-1">
-                            <h3 className="text-2xl font-semibold leading-none tracking-tight">{title}</h3>
-                            <p className="text-sm text-muted-foreground">{description}</p>
-                        </div>
-                    ) : (
-                        <div className="space-y-1">
-                            <Input
-                                type="text"
-                                value={title}
-                                onChange={(e) => {/* lógica para atualizar o título */ }}
-                                className="text-2xl font-semibold leading-none tracking-tight"
-                            />
-                            <Input
-                                type="text"
-                                value={description}
-                                onChange={(e) => {/* lógica para atualizar o título */ }}
-                                className="text-sm text-muted-foreground leading-none tracking-tight"
-                            />
-                        </div>
-                    )}
+
+                    <div className="space-y-1">
+                        <h3 className="text-2xl font-semibold leading-none tracking-tight">{title}</h3>
+                        <p className="text-sm text-muted-foreground">{description}</p>
+                    </div>
                 </div>
                 <Button
                     type="button"
