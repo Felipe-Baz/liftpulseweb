@@ -4,6 +4,7 @@ import "./globals.css";
 import { Provider } from "./provider";
 import OverflowHandler from "@/components/OverflowHandler";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   title: "Liftpulse",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <Provider>
           {children}
           <SpeedInsights />
+          <Analytics />
         </Provider>
       </OverflowHandler>
     </html>
