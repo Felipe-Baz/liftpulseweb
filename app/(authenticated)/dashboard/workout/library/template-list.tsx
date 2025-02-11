@@ -41,7 +41,7 @@ export default function TemplateList() {
   if (loading) {
     return (
       <Card className="flex flex-col items-center justify-center p-8 text-center">
-        <div>Loading...</div>
+        <div>Carregando Treinos...</div>
       </Card>
     )
   }
@@ -50,12 +50,12 @@ export default function TemplateList() {
     return (
       <Card className="flex flex-col items-center justify-center p-8 text-center">
         <Dumbbell className="h-12 w-12 mb-4 text-muted-foreground" />
-        <CardTitle className="mb-2">No Workouts Yet</CardTitle>
-        <CardDescription>Create your first workout template to get started</CardDescription>
+        <CardTitle className="mb-2">Ainda não há treinos</CardTitle>
+        <CardDescription>Crie seu primeiro treino para começar</CardDescription>
         <Button asChild className="mt-4">
           <Link href="/dashboard/workout/create">
             <Plus className="mr-2 h-4 w-4" />
-            Create Template
+            Criar treino
           </Link>
         </Button>
       </Card>
@@ -74,19 +74,19 @@ export default function TemplateList() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
                   <MoreVertical className="h-4 w-4" />
-                  <span className="sr-only">Open menu</span>
+                  <span className="sr-only">Abrir menu</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
                   <Link href={`/templates/${template.id}/edit`}>
                     <Pencil className="mr-2 h-4 w-4" />
-                    Edit
+                    Editar
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(template.id)}>
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete
+                  Deletar
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
