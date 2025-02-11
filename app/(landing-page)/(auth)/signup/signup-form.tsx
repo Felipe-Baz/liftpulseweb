@@ -25,6 +25,7 @@ export default function SignUpForm() {
     const formData = new FormData(event.currentTarget)
     const name = formData.get("name") as string
     const email = formData.get("email") as string
+    const earlyCode = formData.get("earlyCode") as string
     const password = formData.get("password") as string
     const confirmPassword = formData.get("confirmPassword")
 
@@ -37,7 +38,8 @@ export default function SignUpForm() {
         username: name,
         email,
         password,
-        role: "GYM"
+        role: "GYM",
+        earlyCode: earlyCode
       }
 
       // Simula uma chamada de API
@@ -82,6 +84,18 @@ export default function SignUpForm() {
           name="email"
           type="email"
           placeholder="exemplo@email.com"
+          required
+          disabled={isLoading}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="earlyCode">Early Access Cupom</Label>
+        <Input
+          id="earlyCode"
+          name="earlyCode"
+          type="text"
+          placeholder="Codigo de acesso ao early Acess"
           required
           disabled={isLoading}
         />

@@ -15,5 +15,6 @@ export interface SignupData {
   email: string
   password: string
   role: "GYM"
+  earlyCode: string | null | undefined
 }
 
