@@ -7,12 +7,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { Workout } from "@/types/workout"
+import { WorkoutDto } from "@/types/workout"
 import { fetchWorkouts } from "@/actions/workout"
 
 export default function TemplateList() {
   const [expandedTemplates, setExpandedTemplates] = useState<string[]>([])
-  const [workouts, setWorkouts] = useState<Workout[]>([]) // Estado para armazenar os treinos
+  const [workouts, setWorkouts] = useState<WorkoutDto[]>([]) // Estado para armazenar os treinos
   const [loading, setLoading] = useState<boolean>(true) // Estado para controle de carregamento
 
   // Função para buscar os treinos quando o componente for montado
@@ -65,7 +65,7 @@ export default function TemplateList() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {workouts.map((template) => (
-        <Card key={template.id}>
+        <Card key={template.workout_id}>
           <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
             <div className="space-y-1">
               <CardTitle>{template.title}</CardTitle>
@@ -79,12 +79,12 @@ export default function TemplateList() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                  <Link href={`/templates/${template.id}/edit`}>
+                  <Link href={`/templates/${template.workout_id}/edit`}>
                     <Pencil className="mr-2 h-4 w-4" />
                     Editar
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(template.id)}>
+                <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(template.workout_id)}>
                   <Trash2 className="mr-2 h-4 w-4" />
                   Deletar
                 </DropdownMenuItem>
