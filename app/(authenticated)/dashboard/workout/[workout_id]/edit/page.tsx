@@ -139,11 +139,11 @@ export default function EditWorkoutForm() {
             const savedWorkout = await updateWorkout(workoutId, workoutToSave)
 
             if (savedWorkout) {
-                console.log('Treino salvo com sucesso:', savedWorkout)
+                console.log('Treino Editado com sucesso:', savedWorkout)
                 router.refresh()
                 router.push("/dashboard/workout/library")
             } else {
-                console.error('Erro ao salvar o treino')
+                console.error('Erro ao editar o treino')
             }
         }
     }
